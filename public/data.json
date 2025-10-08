@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Jane Doe",
+  "age": 30,
+  "email": "jane.doe@example.com",
+  "isStudent": false,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "zipCode": "12345"
+  }
+}
