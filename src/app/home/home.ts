@@ -9,12 +9,6 @@ import axios from 'axios';
 })
 
 export class Home {
-  protected webData= signal('');
 
-    constructor() {
-axios.get('./data.json')
-    .then(rsp =>this.webData.set(JSON.stringify(rsp.data, null, 2)))
-}
-  
 
 }

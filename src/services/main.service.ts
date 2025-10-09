@@ -1,7 +1,7 @@
-import  axios from 'axios';
-const client = axios.create();
+import axios from "axios";
 export class MainService {
-    static async getAllAdimisionQuestions() {
-        return await axios.get('https://fakestoreapi.com/products');
+    static async getToys(){
+        return axios.get('/toys.json');
     }
 }
+
