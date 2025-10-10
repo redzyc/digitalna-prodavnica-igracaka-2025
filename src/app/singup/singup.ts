@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { MainService } from '../../services/main.service';
 
 
 @Component({
@@ -12,8 +13,12 @@ import { UserService } from '../../services/user.service';
 })
 export class Singup {
 protected form: FormGroup
+protected toys =signal<string[]>([])
 
   constructor(private formBuilder: FormBuilder,protected router: Router) {
+    MainService.getToys()
+      .then(rsp=>this.toys.set(rsp.data))
+
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -32,15 +37,20 @@ protected form: FormGroup
         alert('Form is not valid')
         return
       }
+      if(this.form.value.password !== this.form.value.repeat){
+        alert('Passwords don\'t match!')
+        return
+      }
   
       try{
-        UserService.login(this.form.value.email, this.form.value.password)
-        this.router.navigate(['/profile'])
+        const formValue: any = this.form.value
+        delete formValue.repeat
+        UserService.singup(formValue)
+        this.router.navigateByUrl('/login')
       }catch(e){
-        alert('Check your credentials!')
+        console.error(e)
+        alert('Data missing')
       }
-      console.log(this.form.valid);
-      console.log(this.form.value);
     }
 
 }

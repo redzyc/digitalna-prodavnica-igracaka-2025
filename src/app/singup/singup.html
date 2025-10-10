@@ -3,55 +3,58 @@
         <h5>Sing up</h5>
     </div>
     <div class="card-body">
-        <form>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <div class="mb-3">
-                <label for="name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="name">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="name">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email">
+                <input type="email" class="form-control" id="email" formControlName="email">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="name">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" formControlName="phone">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Country</label>
-                <input type="text" class="form-control" id="name">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" class="form-control" id="country"    formControlName="country">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">City</label>
-                <input type="text" class="form-control" id="name">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city"   formControlName="city">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Address</label>
-                <input type="text" class="form-control" id="name">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address"  formControlName="address">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password">
+                <input type="password" class="form-control" id="password" formControlName="password">
             </div>
             <div class="mb-3">
                 <label for="repeat" class="form-label">Repeat Password</label>
-                <input type="password" class="form-control" id="repeat">
+                <input type="password" class="form-control" id="repeat"    formControlName="repeat">
             </div>
             <div class="mb-3">
-                <label for="repeat" class="form-label">Choose your favourite toys</label>
-                <select class="form-select" aria-label="Default select example">
-                <!-- @for ( toy of toys();track $index){
+                <label for="toy" class="form-label">Choose your favourite toys</label>
+                <select class="form-select" id="toy" formControlName="toy">
+                 @for ( toy of toys();track $index){
                     <option [value]="toy">{{toy}} </option>
-                } -->
+                }
             </select>
                 
             </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Submit
-            </button>
+            <div>
+                 <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Submit
+                </button>
+                <a routerLink="/login" class="btn btn-link"> I already have an account</a>
+            </div>
         </form>
     </div>
 </div>

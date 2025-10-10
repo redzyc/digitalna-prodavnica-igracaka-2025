@@ -6,15 +6,18 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email"formControlName="email" >
+                <input type="email" class="form-control" id="email" formControlName="email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" formControlName="password">
             </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Submit
-            </button>
+            <div>
+                 <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Submit
+                </button>
+                <a routerLink="/singup" class="btn btn-link"> I don't have an account</a>
+            </div>
         </form>
     </div>
 </div>

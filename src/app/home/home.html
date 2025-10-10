@@ -1,11 +1,27 @@
-<div class="card" style="width: 18rem;">
-    <div class="card-header">
-    Featured
+<div class="toys">
+  @for(toy of toys(); track toy.toyId) {
+  <div class="card">
+    <img [src]="getImage(toy.toyId)" class="card-img-top">
+
+    <div class="card-body">
+      <h5 class="card-title">{{toy.name}}</h5>
+      <p class="card-text">{{toy.description}}</p>
+      <p class="age-group">Age: {{toy.ageGroup.name}}</p>
+      <p class="price">Price: {{toy.price}} RSD</p>
+    </div>
+
+    <div class="card-footer">
+      <div class="btn-group">
+        <a [routerLink]="`/${toy.toyId}`" class="btn btn-primary">
+          <i class="fa-solid fa-circle-info"></i> View Details
+        </a>
+        <a [routerLink]="`/${toy.toyId}`" class="btn btn-success">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Add in bag
+        </a>
+      </div>
+
+
+    </div>
   </div>
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
+  }
 </div>
