@@ -1,27 +1,31 @@
-<div class="toys">
+<div class="home-container">
+
   @for(toy of toys(); track toy.toyId) {
-  <div class="card">
-    <img [src]="getImage(toy.toyId)" class="card-img-top">
+    <div class="toy-card glassy-card fade-in">
+      
+      <!-- Slika igračke -->
+      <div class="toy-image">
+        <img [src]="getImage(toy.toyId)" alt="{{ toy.name }}" />
+      </div>
 
-    <div class="card-body">
-      <h5 class="card-title">{{toy.name}}</h5>
-      <p class="card-text">{{toy.description}}</p>
-      <p class="age-group">Age: {{toy.ageGroup.name}}</p>
-      <p class="price">Price: {{toy.price}} RSD</p>
-    </div>
+      <!-- Detalji -->
+      <div class="toy-body">
+        <h5 class="toy-title text-gradient">{{ toy.name }}</h5>
+        <p class="toy-description">{{ toy.description }}</p>
+        <p class="toy-age">👶 Age: {{ toy.ageGroup.name }}</p>
+        <p class="toy-price">💰 Price: {{ toy.price }} RSD</p>
+      </div>
 
-    <div class="card-footer">
-      <div class="btn-group">
-        <a [routerLink]="`/${toy.toyId}`" class="btn btn-primary">
-          <i class="fa-solid fa-circle-info"></i> View Details
+      <!-- Dugmići -->
+      <div class="toy-footer text-center">
+        <a [routerLink]="`/details/${toy.toyId}`" class="btn btn-primary glowing-btn me-2">
+          <i class="fa-solid fa-circle-info me-1"></i> Details
         </a>
-        <a [routerLink]="`/${toy.toyId}`" class="btn btn-success">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Add in bag
+        <a [routerLink]="`/details/${toy.toyId}`" class="btn btn-success glowing-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Add to Bag
         </a>
       </div>
 
-
     </div>
-  </div>
   }
 </div>

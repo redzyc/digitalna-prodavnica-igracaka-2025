@@ -1,0 +1,66 @@
+/* === Global Dark Mode === */
+body {
+  background: radial-gradient(circle at 20% 20%, #1a1a1a, #0d0d0d);
+  color: #f2f2f2;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === Navbar === */
+.glassy-nav {
+  background: rgba(25, 25, 25, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand {
+  color: #fff;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.nav-link {
+  color: #bfbfbf !important;
+  margin: 0 0.5rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffd700 !important;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+/* === Footer === */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(6px);
+  color: #999;
+}
+
+/* === Text Gradient Effect === */
+.text-gradient {
+  background: linear-gradient(90deg, #ffdf00, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* === Smooth Page Transitions === */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

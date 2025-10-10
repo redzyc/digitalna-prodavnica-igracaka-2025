@@ -4,12 +4,14 @@ import { About } from './about/about';
 import { Login } from './login/login';
 import { Singup } from './singup/singup';
 import {Profile} from './profile/profile';
+import { Details } from './details/details';
 export const routes: Routes = [
-    { path: '',component: Home },
-    {path: 'login', component: Login},
-    {path: 'singup', component: Singup},
-    {path: 'about', component: About},
-    {path: 'profile', component: Profile},
+    { path: '', title: 'Home', component: Home },
+    {path: 'login', title: 'Login', component: Login},
+    {path: 'singup',title: 'Singup', component: Singup},
+    {path: 'about',title: 'About', component: About},
+    {path: 'profile', title: 'User Profile',component: Profile},
+    {path:'details/:id',title: 'Details',component: Details},
     {path: '**', redirectTo: '' } //vraca do home-a ako se ubaci nesto sto ne postoji
 
 ];

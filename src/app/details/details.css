@@ -1,0 +1,111 @@
+.toy-details-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #f5f5f5;
+  background: radial-gradient(circle at 30% 20%, #1a1a1a, #0d0d0d);
+  border-radius: 24px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.05);
+}
+
+/* Slika proizvoda */
+.toy-image {
+  text-align: center;
+}
+
+.toy-img {
+  max-width: 90%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.toy-img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+/* Kartica sa detaljima */
+.glassy-card {
+  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
+}
+
+/* Naslovi i tekst */
+.toy-title {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ffd700, #ffae00, #00bfff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toy-subtitle {
+  color: #cfcfcf;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* Lista detalja */
+.toy-list li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.8rem 0;
+  font-size: 1rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #ffd700;
+}
+
+.value {
+  color: #f0f0f0;
+}
+
+.price {
+  color: #00ff9d;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Dugme */
+.glowing-btn {
+  border: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  background: linear-gradient(90deg, #ffd700, #ffb300);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.glowing-btn:hover {
+  background: linear-gradient(90deg, #ffae00, #ffd700);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+/* Animacija pojavljivanja */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,59 @@
+@if (toy()) {
+  <div class="toy-details-container fade-in">
+
+    <!-- Slika proizvoda -->
+    <div class="toy-image">
+      <img
+        class="img-fluid toy-img rounded-4 shadow-lg"
+        [src]="getImage(toy()!.toyId)"
+        alt="{{ toy()?.name }}"
+      />
+    </div>
+
+    <!-- Detalji -->
+    <div class="toy-info glassy-card">
+      <div class="card-header text-center py-3 mb-3">
+        <h2 class="toy-title text-gradient mb-1">{{ toy()?.name }}</h2>
+        <p class="toy-subtitle mb-0">🎁 Savršen poklon za vaše dete</p>
+      </div>
+
+      <ul class="list-unstyled toy-list">
+        <li>
+          <span class="label">🧸 Opis:</span>
+          <span class="value">{{ toy()?.description }}</span>
+        </li>
+
+        <li>
+          <span class="label">💰 Cena:</span>
+          <span class="value price">{{ toy()?.price }} RSD</span>
+        </li>
+
+        <li>
+          <span class="label">🏭 Proizvedeno:</span>
+          <span class="value">{{ toy()?.productionDate }}</span>
+        </li>
+
+        <li>
+          <span class="label">🎨 Tip:</span>
+          <span class="value">{{ toy()?.type?.name }}</span>
+        </li>
+
+        <li>
+          <span class="label">👶 Starosna grupa:</span>
+          <span class="value">{{ toy()?.ageGroup?.name }}</span>
+        </li>
+        
+        <li>
+          <span class="label">👶 Ciljna grupa:</span>
+          <span class="value">{{ toy()?.targetGroup }}</span>
+        </li>
+      </ul>
+
+      <div class="text-center mt-4">
+        <button class="btn btn-warning btn-lg fw-bold shadow glowing-btn">
+          🛒 Dodaj u korpu
+        </button>
+      </div>
+    </div>
+  </div>
+}
