@@ -2,10 +2,13 @@ import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToyService } from '../../services/toy.service';
 import { ToyModel } from '../../models/toy.model';
+import { RouterModule } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-details',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './details.html',
   styleUrl: './details.css'
 })

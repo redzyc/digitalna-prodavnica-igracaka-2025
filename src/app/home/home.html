@@ -1,27 +1,24 @@
 <div class="home-container">
 
-  @for(toy of toys(); track toy.toyId) {
+  @for(toy of toys(); track $index) {
     <div class="toy-card glassy-card fade-in">
       
-      <!-- Slika igračke -->
       <div class="toy-image">
         <img [src]="getImage(toy.toyId)" alt="{{ toy.name }}" />
       </div>
 
-      <!-- Detalji -->
       <div class="toy-body">
         <h5 class="toy-title text-gradient">{{ toy.name }}</h5>
         <p class="toy-description">{{ toy.description }}</p>
-        <p class="toy-age">👶 Age: {{ toy.ageGroup.name }}</p>
-        <p class="toy-price">💰 Price: {{ toy.price }} RSD</p>
+        <p class="toy-age"> Age: {{ toy.ageGroup.name }}</p>
+        <p class="toy-price"> Price: {{ toy.price }} RSD</p>
       </div>
-
-      <!-- Dugmići -->
+      
       <div class="toy-footer text-center">
         <a [routerLink]="`/details/${toy.toyId}`" class="btn btn-primary glowing-btn me-2">
           <i class="fa-solid fa-circle-info me-1"></i> Details
         </a>
-        <a [routerLink]="`/details/${toy.toyId}`" class="btn btn-success glowing-btn">
+        <a [routerLink]="`/details/${toy.toyId}/book`" class="btn btn-success glowing-btn">
           <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Add to Bag
         </a>
       </div>

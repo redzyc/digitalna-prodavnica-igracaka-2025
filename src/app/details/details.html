@@ -1,7 +1,6 @@
 @if (toy()) {
   <div class="toy-details-container fade-in">
 
-    <!-- Slika proizvoda -->
     <div class="toy-image">
       <img
         class="img-fluid toy-img rounded-4 shadow-lg"
@@ -10,7 +9,6 @@
       />
     </div>
 
-    <!-- Detalji -->
     <div class="toy-info glassy-card">
       <div class="card-header text-center py-3 mb-3">
         <h2 class="toy-title text-gradient mb-1">{{ toy()?.name }}</h2>
@@ -50,9 +48,9 @@
       </ul>
 
       <div class="text-center mt-4">
-        <button class="btn btn-warning btn-lg fw-bold shadow glowing-btn">
-          🛒 Dodaj u korpu
-        </button>
+         <a [routerLink]="`/details/${toy()!.toyId}/book`" class="btn btn-warning btn-lg fw-bold shadow glowing-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Add to Bag
+        </a>
       </div>
     </div>
   </div>

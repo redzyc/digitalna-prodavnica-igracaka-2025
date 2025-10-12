@@ -17,7 +17,8 @@ export class App {
       return true;
     return false;
   }
-  logout(){
+  logoutNow(){
+    if(!confirm('Are you sure?')) return
     UserService.logout();
     this.router.navigateByUrl('/login');
   }

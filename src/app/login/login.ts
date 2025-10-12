@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EmailValidator, Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+//import { Utils } from '../utils';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './login.css'
 })
 export class Login {
+  [x: string]: any;
   protected form: FormGroup
 
   constructor(private formBuilder: FormBuilder,protected router: Router) {
@@ -27,12 +29,12 @@ export class Login {
 
     try{
       UserService.login(this.form.value.email, this.form.value.password)
-      this.router.navigate(['/profile'])
+      const url = sessionStorage.getItem('ref') ?? '/profile'
+      sessionStorage.removeItem('ref')
+      this.router.navigateByUrl(url)
     }catch(e){
-      alert('Check your credentials!')
+      alert('Check your login params!')
     }
-    console.log(this.form.valid);
-    console.log(this.form.value);
   }
 
 }
