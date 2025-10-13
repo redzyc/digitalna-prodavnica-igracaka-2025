@@ -1,3 +1,5 @@
+import { ReviewModel } from "./review.model"
+
 export interface ToyModel {
     toyId: number
     name: string
@@ -17,5 +19,6 @@ export interface ToyModel {
         name: string
         description: string
     }
+    reviews: ReviewModel[]
 
 }

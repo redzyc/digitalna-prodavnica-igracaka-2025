@@ -1,0 +1,22 @@
+<ng-container *ngIf="currentBasket as basket; else emptyBasket">
+  <mat-card class="basket-container mat-elevation-z2">
+    <mat-card-title>🧺 Your Basket</mat-card-title>
+
+    <mat-list>
+      <mat-list-item *ngFor="let item of basket.items; let i = index">
+        Toy ID: {{ item.toyId }} | Quantity: {{ item.numOfProd }} | Status: {{ item.status }}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <p><strong>Total items:</strong> {{ basket.totalItemCount }}</p>
+      <p><strong>Total price:</strong> {{ basket.totalPrice }} RSD</p>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+<ng-template #emptyBasket>
+  <p>Your bag is empty</p>
+</ng-template>

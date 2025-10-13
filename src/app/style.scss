@@ -1,8 +1,11 @@
+@use '@angular/material' as mat;
+
+@import '@angular/material/prebuilt-themes/purple-green.css';
 .fixed-toolbar {
   position: fixed;
   top: 0;
-  width: 100%;
   z-index: 1000;
+  width: 100%;
 }
 
 .toolbar-container {
@@ -17,7 +20,7 @@
 
 .desktop-nav {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .mobile-menu-button {
@@ -41,12 +44,4 @@
 
 .active-link {
   border-bottom: 2px solid #fff;
-}
-
-.mobile-sidenav-container {
-  margin-top: 64px; /* visina toolbar-a */
-}
-
-.main-content-area {
-  padding: 2rem;
 }

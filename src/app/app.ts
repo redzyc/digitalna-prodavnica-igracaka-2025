@@ -1,24 +1,46 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';  // <-- dodaj ovo
 import { UserService } from '../services/user.service';
+
+// Angular Material moduli
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterLink],
+  standalone: true,
+  imports: [
+    CommonModule,  // <-- ovde je bitno
+    RouterOutlet,
+    RouterLink,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTooltipModule
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('Mihajlo');
-  router: any;
 
-  hasAuth(){
-    if(localStorage.getItem('active'))
-      return true;
-    return false;
+  constructor(private router: Router) {} 
+
+  hasAuth(): boolean {
+    return !!localStorage.getItem('active');
   }
-  logoutNow(){
-    if(!confirm('Are you sure?')) return
+  
+  logoutNow(): void {
+    if (!confirm('Are you sure?')) return;
     UserService.logout();
     this.router.navigateByUrl('/login');
   }

@@ -1,0 +1,44 @@
+.profile-card {
+  max-width: 800px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  color: #fff;
+}
+
+.card-header h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.table {
+  color: #fff;
+}
+
+.table th {
+  width: 40%;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255,255,255,0.05);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.btn-primary {
+  background: #ff8a00;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #e52e71;
+  transform: translateY(-2px);
+}

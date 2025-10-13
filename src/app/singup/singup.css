@@ -1,0 +1,43 @@
+.signup-card {
+  max-width: 600px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  color: #fff;
+}
+
+.card-header h5 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form-control, .form-select {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+}
+
+.form-control::placeholder {
+  color: #ccc;
+}
+
+.btn-primary {
+  background: #ff8a00;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #e52e71;
+  transform: translateY(-2px);
+}
+
+.btn-link {
+  color: #fff;
+  text-decoration: underline;
+}

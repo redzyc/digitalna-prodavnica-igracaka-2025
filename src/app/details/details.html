@@ -1,57 +1,42 @@
-@if (toy()) {
+<ng-container *ngIf="toy() as t; else noToy">
   <div class="toy-details-container fade-in">
 
     <div class="toy-image">
-      <img
-        class="img-fluid toy-img rounded-4 shadow-lg"
-        [src]="getImage(toy()!.toyId)"
-        alt="{{ toy()?.name }}"
-      />
+      <img class="img-fluid toy-img rounded-4 shadow-lg" [src]="getImage(t.toyId)" alt="{{ t.name }}" />
     </div>
 
     <div class="toy-info glassy-card">
       <div class="card-header text-center py-3 mb-3">
-        <h2 class="toy-title text-gradient mb-1">{{ toy()?.name }}</h2>
+        <h2 class="toy-title text-gradient mb-1">{{ t.name }}</h2>
         <p class="toy-subtitle mb-0">🎁 Savršen poklon za vaše dete</p>
       </div>
 
       <ul class="list-unstyled toy-list">
+        <li><span class="label">🧸 Opis:</span> <span class="value">{{ t.description }}</span></li>
+        <li><span class="label">💰 Cena:</span> <span class="value price">{{ t.price }} RSD</span></li>
+        <li><span class="label">🏭 Proizvedeno:</span> <span class="value">{{ t.productionDate }}</span></li>
+        <li><span class="label">🎨 Tip:</span> <span class="value">{{ t.type.name }}</span></li>
+        <li><span class="label">👶 Starosna grupa:</span> <span class="value">{{ t.ageGroup.name }}</span></li>
+        <li><span class="label">👶 Ciljna grupa:</span> <span class="value">{{ t.targetGroup }}</span></li>
         <li>
-          <span class="label">🧸 Opis:</span>
-          <span class="value">{{ toy()?.description }}</span>
-        </li>
-
-        <li>
-          <span class="label">💰 Cena:</span>
-          <span class="value price">{{ toy()?.price }} RSD</span>
-        </li>
-
-        <li>
-          <span class="label">🏭 Proizvedeno:</span>
-          <span class="value">{{ toy()?.productionDate }}</span>
-        </li>
-
-        <li>
-          <span class="label">🎨 Tip:</span>
-          <span class="value">{{ toy()?.type?.name }}</span>
-        </li>
-
-        <li>
-          <span class="label">👶 Starosna grupa:</span>
-          <span class="value">{{ toy()?.ageGroup?.name }}</span>
-        </li>
-        
-        <li>
-          <span class="label">👶 Ciljna grupa:</span>
-          <span class="value">{{ toy()?.targetGroup }}</span>
+          <div class="mb-3">
+            <label for="numOfProd" class="form-label">Choose number: </label>
+            <select class="form-select" id="numOfProd" [(ngModel)]="selectedNum" name="numOfProd">
+              <option *ngFor="let n of numOfProds" [value]="n">{{ n }}</option>
+            </select>
+          </div>
         </li>
       </ul>
 
       <div class="text-center mt-4">
-         <a [routerLink]="`/details/${toy()!.toyId}/book`" class="btn btn-warning btn-lg fw-bold shadow glowing-btn">
+        <button type="button" class="btn btn-warning btn-lg fw-bold shadow glowing-btn" (click)="addToBag()">
           <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Add to Bag
-        </a>
+        </button>
       </div>
     </div>
   </div>
-}
+</ng-container>
+
+<ng-template #noToy>
+  <p>Loading toy details...</p>
+</ng-template>

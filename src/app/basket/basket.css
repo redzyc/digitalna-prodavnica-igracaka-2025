@@ -1,0 +1,8 @@
+.basket-container {
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+mat-list-item {
+  font-size: 0.95rem;
+}

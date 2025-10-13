@@ -72,7 +72,7 @@ export class UserService {
                 u.data.push({
                     toyId: id,
                     numOfProd,
-                    status: 'waiting',
+                    status: 'RESERVED',
                     createdAt: new Date().toISOString(),
                     updatedAt: null
                 })

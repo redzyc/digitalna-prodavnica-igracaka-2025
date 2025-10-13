@@ -1,4 +1,4 @@
-import { ReservationModel } from "./reservation.model"
+import { BasketModel } from "./basket.model"
 
 export interface UserModel {
     firstName: string
@@ -10,5 +10,5 @@ export interface UserModel {
     city: string
     address: string
     toy: string
-    data: ReservationModel[]
+    data: BasketModel[]
 }
