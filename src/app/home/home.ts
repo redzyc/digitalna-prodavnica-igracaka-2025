@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ToyService } from '../../services/toy.service';
 import { CommonModule } from '@angular/common';
+import { ToyModel } from '../../models/toy.model';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home.css']
 })
 export class Home {
-  protected toys = signal<any[]>([]);
+  protected toys = signal<ToyModel[]>([]);
 
   constructor(private router: Router) {
     ToyService.getToys()

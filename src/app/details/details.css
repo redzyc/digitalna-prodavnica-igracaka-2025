@@ -1,54 +1,33 @@
 .toy-details-container {
   display: flex;
-  flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
   animation: fadeIn 0.5s ease-in-out;
+  align-items: flex-start;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+/* Slika sa leve strane - 40% širine */
 .toy-image {
-  flex: 1 1 300px;
+  flex: 0 0 40%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .toy-img {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
+/* Detalji sa desne strane - 60% */
 .toy-info {
-  flex: 1 1 350px;
+  flex: 0 0 60%;
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(10px);
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.card-header {
-  text-align: center;
-}
-
-.toy-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #ff8a00, #e52e71);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.toy-subtitle {
-  font-size: 1rem;
-  color: #ccc;
 }
 
 .toy-list {
@@ -59,36 +38,28 @@
 
 .toy-list li {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.label {
-  font-weight: 600;
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #1e1e1e;
   color: #fff;
-}
-
-.value {
-  color: #ddd;
-}
-
-.value.price {
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-select.form-select {
-  width: 100px;
-}
-
-.glowing-btn {
-  transition: all 0.3s ease;
-}
-
-.glowing-btn:hover {
-  box-shadow: 0 0 15px #ffcc00, 0 0 30px #ffcc00, 0 0 45px #ffcc00;
-  transform: translateY(-2px);
+  font-weight: 500;
+  padding: 2px 4px;
 }
 
 @media (max-width: 768px) {
@@ -97,11 +68,7 @@ select.form-select {
     align-items: center;
   }
 
-  .toy-info, .toy-image {
+  .toy-image, .toy-info {
     flex: 1 1 100%;
-  }
-
-  select.form-select {
-    width: 100%;
   }
 }

@@ -1,39 +1,47 @@
 <ng-container *ngIf="toy() as t; else noToy">
   <div class="toy-details-container fade-in">
 
+    <!-- Slika leve strane -->
     <div class="toy-image">
-      <img class="img-fluid toy-img rounded-4 shadow-lg" [src]="getImage(t.toyId)" alt="{{ t.name }}" />
+      <img class="toy-img" [src]="getImage(t.toyId)" alt="{{ t.name }}" />
     </div>
 
-    <div class="toy-info glassy-card">
-      <div class="card-header text-center py-3 mb-3">
-        <h2 class="toy-title text-gradient mb-1">{{ t.name }}</h2>
-        <p class="toy-subtitle mb-0">🎁 Savršen poklon za vaše dete</p>
-      </div>
+    <!-- Detalji desne strane -->
+    <mat-card class="toy-info mat-elevation-z4">
+      <mat-card-header>
+        <mat-card-title>{{ t.name }}</mat-card-title>
+        <mat-card-subtitle>🎁 Savršen poklon za vaše dete</mat-card-subtitle>
+      </mat-card-header>
 
-      <ul class="list-unstyled toy-list">
-        <li><span class="label">🧸 Opis:</span> <span class="value">{{ t.description }}</span></li>
-        <li><span class="label">💰 Cena:</span> <span class="value price">{{ t.price }} RSD</span></li>
-        <li><span class="label">🏭 Proizvedeno:</span> <span class="value">{{ t.productionDate }}</span></li>
-        <li><span class="label">🎨 Tip:</span> <span class="value">{{ t.type.name }}</span></li>
-        <li><span class="label">👶 Starosna grupa:</span> <span class="value">{{ t.ageGroup.name }}</span></li>
-        <li><span class="label">👶 Ciljna grupa:</span> <span class="value">{{ t.targetGroup }}</span></li>
-        <li>
-          <div class="mb-3">
-            <label for="numOfProd" class="form-label">Choose number: </label>
-            <select class="form-select" id="numOfProd" [(ngModel)]="selectedNum" name="numOfProd">
-              <option *ngFor="let n of numOfProds" [value]="n">{{ n }}</option>
-            </select>
-          </div>
-        </li>
-      </ul>
+      <mat-card-content>
+        <ul class="list-unstyled toy-list">
+          <li><mat-icon>description</mat-icon> Opis: {{ t.description }}</li>
+          <li><mat-icon>attach_money</mat-icon> Cena: {{ t.price | number:'1.0-2' }} RSD</li>
+          <li><mat-icon>factory</mat-icon> Proizvedeno: {{ t.productionDate }}</li>
+          <li><mat-icon>palette</mat-icon> Tip: {{ t.type.name }}</li>
+          <li><mat-icon>child_care</mat-icon> Starosna grupa: {{ t.ageGroup.name }}</li>
+          <li><mat-icon>group</mat-icon> Ciljna grupa: {{ t.targetGroup }}</li>
+          <li>
+            <div class="quantity-controls">
+              <button mat-mini-fab color="warn" (click)="decreaseQuantity()">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <input type="number" min="1" max="99" [(ngModel)]="selectedNum" class="quantity-input" />
+              <button mat-mini-fab color="primary" (click)="increaseQuantity()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </mat-card-content>
 
-      <div class="text-center mt-4">
-        <button type="button" class="btn btn-warning btn-lg fw-bold shadow glowing-btn" (click)="addToBag()">
-          <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Add to Bag
+      <mat-card-actions class="text-center">
+        <button mat-raised-button color="accent" (click)="addToBag()">
+          <mat-icon>add_shopping_cart</mat-icon> Add to Bag
         </button>
-      </div>
-    </div>
+      </mat-card-actions>
+    </mat-card>
+
   </div>
 </ng-container>
 

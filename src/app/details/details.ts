@@ -1,23 +1,40 @@
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-
-import { ToyService } from '../../services/toy.service';
 import { BasketService } from '../../services/basket.service';
+import { BasketModel } from '../../models/basket.model';
 import { ToyModel } from '../../models/toy.model';
-import { UserService } from '../../services/user.service';
+import { ToyService } from '../../services/toy.service';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
+
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [RouterModule, FormsModule, CommonModule],
+  imports: [RouterModule, 
+    FormsModule, 
+    CommonModule,
+    MatCardModule,
+    MatListModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule,
+    FormsModule,
+    MatButtonModule],
   templateUrl: './details.html',
   styleUrls: ['./details.css']
 })
 export class Details {
   protected toy = signal<ToyModel | null>(null);
-  protected numOfProds: number[] = Array.from({ length: 15 }, (_, i) => i + 1);
   protected selectedNum: number = 1;
 
   constructor(
@@ -38,7 +55,12 @@ export class Details {
 
   protected async addToBag() {
     const toy = this.toy();
+    const currentNumOfProd = this.basketService.getQuantityForToy(toy!.toyId)
     if (!toy) return;
+    if ((this.selectedNum + currentNumOfProd) > 99){
+      alert("We don't have that much in stock. The current number in stock is 99")
+      return 
+    }
 
     let activeUser = null;
     try {
@@ -55,4 +77,12 @@ export class Details {
     console.log('🧺 Current basket:', basket);
     alert(`Dodali ste ${this.selectedNum}x "${toy.name}" u korpu 🧺`);
   }
+
+increaseQuantity() {
+  this.selectedNum++;
+}
+
+decreaseQuantity() {
+  if (this.selectedNum > 1) this.selectedNum--;
+}
 }

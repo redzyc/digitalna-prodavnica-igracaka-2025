@@ -1,44 +1,36 @@
 .profile-card {
-  max-width: 800px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  max-width: 900px;
+  margin: 2rem auto;
   padding: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
   color: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-.card-header h2 {
+mat-card-header h2 {
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 2rem;
   background: linear-gradient(90deg, #ff8a00, #e52e71);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.table {
-  color: #fff;
+.profile-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
-.table th {
-  width: 40%;
+.profile-section {
+  flex: 1 1 45%;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(255,255,255,0.05);
+mat-form-field {
+  margin-bottom: 1rem;
 }
 
-.table-hover tbody tr:hover {
-  background-color: rgba(255,255,255,0.1);
-}
-
-.btn-primary {
-  background: #ff8a00;
-  border: none;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background: #e52e71;
-  transform: translateY(-2px);
+button mat-icon {
+  margin-right: 0.3rem;
 }

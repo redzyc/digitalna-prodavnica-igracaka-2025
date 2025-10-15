@@ -3,18 +3,39 @@ import { UserModel } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatDividerModule
+  ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
 export class Profile {
-  protected currentUser = signal<UserModel | null>(null);
+   protected currentUser = signal<UserModel | null>(UserService.getActiveUser());
 
-  constructor(private router: Router) {
+  currentPassword = '';
+  newPassword = '';
+  confirmPassword = '';
+
+  constructor(private router: Router, private snackBar: MatSnackBar) {
     try {
       const user = UserService.getActiveUser();
       this.currentUser.set(user ?? null);
@@ -23,14 +44,29 @@ export class Profile {
       this.router.navigateByUrl('/login');
     }
   }
+  saveProfile() {
+    try {
+      // Ovdje bi mogao da pozoveš UserService.updateUser ili direktno localStorage
+      this.snackBar.open('Profile updated successfully!', 'Close', { duration: 2500 });
+    } catch (e) {
+      this.snackBar.open('Failed to update profile!', 'Close', { duration: 2500 });
+    }
+  }
 
-  protected formatDate(iso: string) {
-    return new Date(iso).toLocaleString('sr-RS', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  editProfile() {
+    // Logika za edit profila
+    alert('Edit profile clicked!');
+  }
+
+  changePassword() {
+    if (this.newPassword !== this.confirmPassword) {
+      alert('New passwords do not match!');
+      return;
+    }
+
+    // Ovde ide poziv servisa za promenu lozinke
+    UserService.changePassword(this.currentPassword, this.newPassword)
+      .then(() => alert('Password changed successfully!'))
+      .catch(err => alert('Failed to change password: ' + err));
   }
 }

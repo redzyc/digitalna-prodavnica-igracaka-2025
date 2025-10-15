@@ -7,7 +7,6 @@ import { ToyService } from './toy.service';
 
 export class BasketService {
 
-  // Signal koji prati stanje korpe
   public basketSignal = signal<BasketStateModel>({
     items: [],
     totalPrice: 0,
@@ -15,35 +14,46 @@ export class BasketService {
     customerEmail: null
   });
 
-  // Privatni niz itema
   private currentBasketItems: BasketModel[] = [];
 
+
   constructor() {
-    // Učitaj korpu iz localStorage ako postoji
     this.loadFromLocalStorage();
-    // Osveži signal odmah
     this.updateBasketSignal();
   }
 
-  // Dodavanje itema
-  public async addItem(toy: ToyModel, numOfProd: number = 1) {
-    if (!UserService.getActiveUser()) return;
+public addItem(toy: ToyModel | number, quantity: number = 1) {
+  if (!UserService.getActiveUser()) return;
 
-    const newItem: BasketModel = {
-      toyId: toy.toyId,
-      numOfProd,
-      status: 'RESERVED',
-      createdAt: new Date().toISOString(),
-      updatedAt: null
+  const toyId = typeof toy === 'number' ? toy : toy.toyId;
+
+  const existing = this.currentBasketItems.find(i => i.toyId === toyId);
+
+  if (existing) {
+    existing.numOfProd += quantity;
+  } else {
+    const addNew = (t: ToyModel) => {
+      this.currentBasketItems.push({
+        toyId: t.toyId,
+        numOfProd: quantity,
+        price: t.price,
+        status: 'RESERVED',
+        createdAt: new Date().toISOString(),
+        updatedAt: null
+      });
+      this.updateBasketSignal();
+      this.saveToLocalStorage();
     };
 
-    this.currentBasketItems.push(newItem);
-
-    await this.updateBasketSignal();
-    this.saveToLocalStorage();
+    if (typeof toy === 'number') {
+      ToyService.getToyById(toy).then(r => addNew(r.data));
+    } else {
+      addNew(toy);
+    }
   }
+}
 
-  // Učitavanje korpe iz localStorage
+
   private loadFromLocalStorage() {
     const stored = localStorage.getItem('basket');
     if (stored) {
@@ -55,41 +65,57 @@ export class BasketService {
     }
   }
 
-  // Čuvanje korpe u localStorage
   private saveToLocalStorage() {
     localStorage.setItem('basket', JSON.stringify(this.currentBasketItems));
   }
 
-  // Osvežavanje signala
-  private async updateBasketSignal() {
-    const totalPrice = await this.calculateTotalPrice();
+  private updateBasketSignal() {
+    const totalPrice = this.calculateTotalPrice();
     this.basketSignal.set({
       items: [...this.currentBasketItems],
       totalPrice,
-      totalItemCount: this.currentBasketItems.length,
+      totalItemCount: this.currentBasketItems.reduce(
+        (sum,item) => sum+ Number(item.numOfProd),0
+      ),
       customerEmail: UserService.getActiveUser()?.email ?? null
     });
   }
 
-  // Vraća trenutni state korpe
   public async getBasket(): Promise<BasketStateModel> {
     await this.updateBasketSignal();
     return this.basketSignal();
   }
 
-  // Računanje ukupne cene
-  private async calculateTotalPrice(): Promise<number> {
-    const prices = await Promise.all(
-      this.currentBasketItems.map(async item => {
-        try {
-          const response = await ToyService.getToyById(item.toyId);
-          const toy: ToyModel = response.data;
-          return toy.price * item.numOfProd;
-        } catch {
-          return 0;
-        }
-      })
+  private calculateTotalPrice(): number {
+    return this.currentBasketItems.reduce(
+      (sum, item) => sum + (item.price ?? 0) * item.numOfProd, 0
+
     );
-    return prices.reduce((sum, p) => sum + p, 0);
   }
+
+public removeItem(toyId: number) {
+  this.currentBasketItems = this.currentBasketItems.filter(i => i.toyId !== toyId);
+  this.updateBasketSignal();
+  this.saveToLocalStorage();
+}
+
+public updateItemQuantity(toyId: number, quantity: number) {
+  const item = this.currentBasketItems.find(i => i.toyId === toyId);
+  if (item) {
+    item.numOfProd = quantity;
+    this.updateBasketSignal();
+    this.saveToLocalStorage();
+  }
+}
+public getQuantityForToy(toyId: number): number {
+  const item = this.currentBasketItems.find(i => i.toyId === toyId);
+  return item ? item.numOfProd : 0;
+}
+
+
+
+
+
+
+
 }

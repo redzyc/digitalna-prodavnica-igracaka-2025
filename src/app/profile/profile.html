@@ -1,50 +1,83 @@
-<div class="card profile-card mx-auto mt-4">
-  <div class="card-header text-center">
-    <h2>User Profile</h2>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-12 col-md-6 mb-3">
-        <table class="table table-striped table-hover">
-          <tbody>
-            <tr>
-              <th scope="row">First Name:</th>
-              <td>{{ currentUser()?.firstName }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Last Name:</th>
-              <td>{{ currentUser()?.lastName }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Email:</th>
-              <td>{{ currentUser()?.email }}</td>
-            </tr>
-          </tbody>
-        </table>
+<mat-card class="profile-card mat-elevation-z6">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>User Profile</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form (ngSubmit)="saveProfile()" #profileForm="ngForm">
+      <div class="profile-grid">
+
+        <!-- Levi deo -->
+        <div class="profile-section">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="currentUser()!.firstName" name="firstName" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="currentUser()!.lastName" name="lastName" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput [value]="currentUser()!.email" disabled>
+          </mat-form-field>
+        </div>
+
+        <!-- Desni deo -->
+        <div class="profile-section">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Phone</mat-label>
+            <input matInput [(ngModel)]="currentUser()!.phone" name="phone">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Favourite Toy</mat-label>
+            
+            <input matInput [(ngModel)]="currentUser()!.toy" name="toy">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Address</mat-label>
+            <input matInput [(ngModel)]="currentUser()!.address" name="address">
+          </mat-form-field>
+        </div>
       </div>
-      <div class="col-12 col-md-6 mb-3">
-        <table class="table table-striped table-hover">
-          <tbody>
-            <tr>
-              <th scope="row">Phone:</th>
-              <td>{{ currentUser()?.phone }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Favourite toy:</th>
-              <td>{{ currentUser()?.toy }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Address:</th>
-              <td>{{ currentUser()?.address }}</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div class="text-center mt-3">
+        <button mat-raised-button color="accent" [disabled]="!profileForm.form.valid">
+          <mat-icon>save</mat-icon> Save Changes
+        </button>
       </div>
-    </div>
-  </div>
-  <div class="card-footer text-center">
-    <button class="btn btn-primary">
-      <i class="fa-solid fa-floppy-disk me-1"></i> Edit Profile
-    </button>
-  </div>
-</div>
+    </form>
+
+    <!-- Promena lozinke -->
+    <mat-divider class="my-4"></mat-divider>
+    <h3>Change Password</h3>
+    <form (ngSubmit)="changePassword()" #passwordForm="ngForm">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Current Password</mat-label>
+        <input matInput type="password" [(ngModel)]="currentPassword" name="currentPassword" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>New Password</mat-label>
+        <input matInput type="password" [(ngModel)]="newPassword" name="newPassword" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Confirm New Password</mat-label>
+        <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+      </mat-form-field>
+
+      <div class="text-center mt-2">
+        <button mat-raised-button color="primary" [disabled]="!passwordForm.form.valid || newPassword !== confirmPassword">
+          <mat-icon>lock</mat-icon> Change Password
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

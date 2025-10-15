@@ -51,6 +51,10 @@
       </a>
 
       <ng-container *ngIf="hasAuth(); else loginMobile">
+         <a mat-list-item routerLink="/cart" routerLinkActive="active-link">
+        <mat-icon>shopping_bag</mat-icon>
+        <span>Your Bag</span>
+      </a>
         <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
           <mat-icon>account_circle</mat-icon>
           <span>Profile</span>
