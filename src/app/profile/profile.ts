@@ -11,25 +11,31 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToyService } from '../../services/toy.service';
+import { MatOption, MatSelectModule } from '@angular/material/select';
+import { ToyModel } from '../../models/toy.model';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatDividerModule
+  FormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatButtonModule,
+  MatIconModule,
+  MatCardModule,
+  MatDividerModule,
+  MatOption
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
 export class Profile {
    protected currentUser = signal<UserModel | null>(UserService.getActiveUser());
+   toys: ToyModel[] = [];
 
   currentPassword = '';
   newPassword = '';
@@ -43,6 +49,9 @@ export class Profile {
       alert('No active user!');
       this.router.navigateByUrl('/login');
     }
+     ToyService.getToys()
+      .then((rsp) => this.toys = (rsp.data))
+      .catch((err) => console.error('Error loading toys', err));
   }
   saveProfile() {
     try {

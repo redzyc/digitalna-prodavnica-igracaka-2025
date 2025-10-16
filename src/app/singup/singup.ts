@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserService } from '../../services/user.service';
 import { MainService } from '../../services/main.service';
 import { CommonModule } from '@angular/common';
+import { ToyService } from '../../services/toy.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,8 +18,8 @@ export class Singup {
   protected toys = signal<string[]>([]);
 
   constructor(private formBuilder: FormBuilder, protected router: Router) {
-    MainService.getToys()
-      .then(rsp => this.toys.set(rsp.data))
+    ToyService.getFavToys()
+      .then(rsp => this.toys.set(rsp))
       .catch(err => console.error('Error loading toys', err));
 
     this.form = this.formBuilder.group({

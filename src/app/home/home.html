@@ -1,22 +1,95 @@
-<div class="home-container">
-  <div *ngFor="let toy of toys(); let i = index" class="toy-card glassy-card fade-in" 
-       (click)="goToDetails(toy.toyId)" style="cursor: pointer;">
+<div class="home-layout">
 
-    <div class="toy-image">
-      <img [src]="getImage(toy.toyId)" alt="{{ toy.name }}" />
+  <!-- LEVI FILTER PANEL (20%) -->
+  <div class="filters glassy-card">
+    <h3>Filters</h3>
+
+    <!-- Tip (checkbox lista) -->
+    <div class="filter-group">
+      <label class="filter-group-label">Type</label>
+      <mat-selection-list [(ngModel)]="filters.selectedTypes" (ngModelChange)="applyFilters()" >
+        <mat-list-option *ngFor="let t of toyTypes" [value]="t">
+          {{ t }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="filter-group">
+      <label class="filter-group-label">Age Group</label>
+      <mat-selection-list [(ngModel)]="filters.selectedAgeGroup" (ngModelChange)="applyFilters()">
+        <mat-list-option *ngFor="let t of ageGroups" [value]="t">
+          {{ t }}
+        </mat-list-option>
+      </mat-selection-list>
     </div>
 
-    <div class="toy-body">
-      <h5 class="toy-title text-gradient">{{ toy.name }}</h5>
-      <p class="toy-description">{{ toy.description }}</p>
-      <p class="toy-age">Age: {{ toy.ageGroup.name }}</p>
-      <p class="toy-price">Price: {{ toy.price }} RSD</p>
+    <!-- Target Group (checkbox lista) -->
+    <div class="filter-group">
+      <label class="filter-group-label">Target Group</label>
+      <mat-selection-list [(ngModel)]="filters.selectedTargetGroups" (ngModelChange)="applyFilters()">
+        <mat-list-option value="devojčica">Girl</mat-list-option>
+        <mat-list-option value="dečak">Boy</mat-list-option>
+        <mat-list-option value="svi">Unisex</mat-list-option>
+      </mat-selection-list>
     </div>
 
-    <div class="toy-footer text-center">
-      <a [routerLink]="`/details/${toy.toyId}`" class="btn btn-primary glowing-btn me-2">
-        <i class="fa-solid fa-circle-info me-1"></i> Details
-      </a>
+    <!-- Min/Max Price u jednoj liniji -->
+    <div class="price-inputs">
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Min Price</mat-label>
+        <input matInput type="number" [(ngModel)]="filters.minPriceFilter" (input)="checkPriceBounds()">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Max Price</mat-label>
+        <input matInput type="number" [(ngModel)]="filters.maxPriceFilter" (input)="checkPriceBounds()">
+      </mat-form-field>
+    </div>
+
+    <!-- Review -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Review contains</mat-label>
+      <input matInput type="text" [(ngModel)]="filters.review" (input)="applyFilters()">
+    </mat-form-field>
+
+    <div class="filter-buttons">
+      <button mat-raised-button color="accent" (click)="resetFilters()">Reset</button>
     </div>
   </div>
+
+  <!-- DESNI DEO (80%) -->
+  <div class="main-content">
+    <!-- Search bar gore desno -->
+    <div class="top-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by name or description</mat-label>
+        <input matInput [(ngModel)]="filters.searchTerm" (input)="applyFilters()">
+        <button mat-icon-button matSuffix (click)="applyFilters()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <!-- PRIKAZ IGRAČAKA -->
+    <div class="home-container">
+      <div *ngFor="let toy of filteredToys()" class="toy-card glassy-card fade-in" (click)="goToDetails(toy.toyId)">
+        <div class="toy-image">
+          <img [src]="getImage(toy.toyId)" alt="{{ toy.name }}" />
+        </div>
+
+        <div class="toy-body">
+          <h5 class="toy-title text-gradient">{{ toy.name }}</h5>
+          <p class="toy-description">{{ toy.description }}</p>
+          <p class="toy-age">Age: {{ toy.ageGroup.name }}</p>
+          <p class="toy-price">Price: {{ toy.price }} RSD</p>
+        </div>
+
+        <div class="toy-footer text-center">
+          <a [routerLink]="['/details', toy.toyId]" class="btn btn-primary glowing-btn me-2">
+            <mat-icon>info</mat-icon> Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

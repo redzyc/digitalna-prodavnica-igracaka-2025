@@ -2,23 +2,39 @@ import axios from "axios";
 import { ReviewModel } from "../models/review.model";
 import { ToyModel } from "../models/toy.model";
 
-const client =axios.create({
-    baseURL:'https://toy.pequla.com/api',
-    validateStatus:(status :number ) =>status ===200,
-    headers:{
-        'Accept':'application/json',
-        'X-Name':'TS2025'
+const client = axios.create({
+    baseURL: 'https://toy.pequla.com/api',
+    validateStatus: (status: number) => status === 200,
+    headers: {
+        'Accept': 'application/json',
+        'X-Name': 'TS2025'
 
     }
 })
-export class ToyService{
-    static async getToys(){
+export class ToyService {
+    static async getToys() {
         return await client.get('/toy')
     }
-    static async getToyById(id:number){
+    static async getToyTypes() {
+        return await client.get('/type')
+    }
+    static async getAgeGroup() {
+        return await client.get('/age-group ')
+    }
+    static async getToyById(id: number) {
         return await client.get(`/toy/${id}`)
     }
-    static  async addReview(toy: ToyModel, review: ReviewModel) {
+    static async getFavToys(){
+        try {
+      const response = await axios.get<string[]>('toys.json');
+      return response.data;
+    } catch (err) {
+      console.error('Error loading toys', err);
+      return [];
+    }
+    }
+
+    static async addReview(toy: ToyModel, review: ReviewModel) {
         const t = this.getToyById(toy.toyId)
 
         if (await t) {

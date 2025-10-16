@@ -36,9 +36,15 @@
 
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Favourite Toy</mat-label>
-            
-            <input matInput [(ngModel)]="currentUser()!.toy" name="toy">
+            <mat-select [(ngModel)]="currentUser()!.toy" name="toy">
+              <mat-option *ngFor="let toy of toys" [value]="toy.name">
+                {{ toy.name }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
+
+
+
 
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Address</mat-label>
@@ -53,8 +59,6 @@
         </button>
       </div>
     </form>
-
-    <!-- Promena lozinke -->
     <mat-divider class="my-4"></mat-divider>
     <h3>Change Password</h3>
     <form (ngSubmit)="changePassword()" #passwordForm="ngForm">
@@ -74,7 +78,8 @@
       </mat-form-field>
 
       <div class="text-center mt-2">
-        <button mat-raised-button color="primary" [disabled]="!passwordForm.form.valid || newPassword !== confirmPassword">
+        <button mat-raised-button color="primary"
+          [disabled]="!passwordForm.form.valid || newPassword !== confirmPassword">
           <mat-icon>lock</mat-icon> Change Password
         </button>
       </div>
