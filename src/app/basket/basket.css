@@ -6,11 +6,6 @@
   background-color: #181818;
   color: #f0f0f0;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s;
-}
-
-.basket-container:hover {
-  transform: translateY(-3px);
 }
 
 .basket-items {
@@ -33,7 +28,6 @@
 
 .basket-item:hover {
   background-color: #2e2e2e;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 .toy-image {
@@ -54,12 +48,6 @@
   color: #ffd700;
 }
 
-.item-details p {
-  margin: 2px 0;
-  font-size: 0.95rem;
-  color: #ddd;
-}
-
 .quantity-controls {
   display: flex;
   align-items: center;
@@ -74,8 +62,33 @@
   border: 1px solid #666;
   background-color: #1e1e1e;
   color: #fff;
-  font-weight: 500;
-  padding: 2px 4px;
+}
+
+.status-controls {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rating-section {
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.stars mat-icon {
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.stars mat-icon.filled {
+  color: #ffd700;
 }
 
 .remove-item-btn {
@@ -83,21 +96,25 @@
   top: 0.5rem;
   right: 0.5rem;
   color: #ff4c4c;
-  transition: transform 0.2s;
 }
 
-.remove-item-btn:hover {
-  transform: scale(1.2);
-}
-
-.basket-summary {
-  display: flex;
-  justify-content: space-between;
+.status {
   font-weight: 600;
-  margin-top: 1.5rem;
-  border-top: 1px solid #444;
-  padding-top: 1rem;
-  font-size: 1.1rem;
+  color: #00ff99;
+}
+
+.snack-red {
+  background-color: #f44336;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+}
+
+.snack-green {
+  background-color: #4caf50;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
 }
 
 .empty-basket {
@@ -105,15 +122,4 @@
   margin-top: 2rem;
   font-size: 1.2rem;
   color: #aaa;
-}
-
-.status {
-  font-weight: 600;
-  color: #00ff99;
-}
-.snack-red {
-  background-color: #f44336; /* crvena */
-  color: #fff;
-  text-align: center;
-  font-weight: 600;
 }

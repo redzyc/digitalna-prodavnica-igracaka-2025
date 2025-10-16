@@ -20,5 +20,5 @@ export interface ToyModel {
         description: string
     }
     reviews: ReviewModel[]
-
+    review:string
 }

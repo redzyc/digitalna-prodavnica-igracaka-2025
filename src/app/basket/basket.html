@@ -4,34 +4,65 @@
 
     <div class="basket-items">
       <div class="basket-item" *ngFor="let item of basket.items">
-        <!-- Slika proizvoda -->
-        <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" (click)="goToToy(item.toyId)"
-          style="cursor: pointer;" />
+        <img
+          class="toy-image"
+          [src]="getToyImage(item.toyId)"
+          alt="Toy image"
+          (click)="goToToy(item.toyId)"
+          style="cursor: pointer;"
+        />
 
-
-
-        <!-- Detalji proizvoda -->
         <div class="item-details">
           <h4>{{ getToyDetails(item.toyId)?.name || 'Učitavanje...' }}</h4>
           <p>{{ getToyDetails(item.toyId)?.description || 'Učitavanje...' }}</p>
           <p class="status">Status: {{ item.status }}</p>
-          <p><strong>Price:</strong> {{ item.price | number:'1.0-2' }} RSD</p>
+          <p><strong>Cena:</strong> {{ item.price | number:'1.0-2' }} RSD</p>
 
-          <!-- Količina -->
-          <div class="quantity-controls">
+          <div class="quantity-controls" *ngIf="item.status === 'RESERVED'">
             <button mat-mini-fab color="warn" (click)="updateQuantity(item, item.numOfProd - 1)">
               <mat-icon>remove</mat-icon>
             </button>
-            <input type="number" min="1" max="99" [(ngModel)]="item.numOfProd"
-              (change)="updateQuantity(item, item.numOfProd)" />
+            <input
+              type="number"
+              min="1"
+              max="99"
+              [(ngModel)]="item.numOfProd"
+              (change)="updateQuantity(item, item.numOfProd)"
+            />
             <button mat-mini-fab color="primary" (click)="updateQuantity(item, item.numOfProd + 1)">
               <mat-icon>add</mat-icon>
             </button>
           </div>
+
+          <!-- Dugmad za promenu statusa -->
+          <div class="status-controls" *ngIf="item.status === 'RESERVED'">
+            <button mat-stroked-button color="warn" (click)="changeToCancel(item)">Cancel</button>
+            <button mat-stroked-button color="primary" (click)="changeToArrived(item)">Arrived</button>
+          </div>
+
+          <!-- Sekcija za ocenu kad je stiglo -->
+          <div *ngIf="item.status === 'ARRIVED'" class="rating-section">
+            <p>Oceni igračku:</p>
+            <div class="stars">
+              <mat-icon
+                *ngFor="let star of stars"
+                (click)="rateItem()"
+                [class.filled]="star <=  0"
+              >
+                star
+              </mat-icon>
+            </div>
+          </div>
         </div>
 
-        <!-- Dugme X -->
-        <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item.toyId)">
+        <!-- X dugme (nema ga ako je RESERVED) -->
+        <button
+          *ngIf="item.status !== 'RESERVED'"
+          mat-icon-button
+          color="warn"
+          class="remove-item-btn"
+          (click)="removeItem(item.toyId, item.status)"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -39,10 +70,9 @@
 
     <mat-divider></mat-divider>
 
-    <!-- Ukupno -->
     <mat-card-content class="basket-summary">
       <h4>Ukupno: {{ basket.totalPrice | number:'1.0-2' }} RSD</h4>
-      <p><strong>Items:</strong> {{ basket.totalItemCount }}</p>
+      <p><strong>Stavki:</strong> {{ basket.totalItemCount }}</p>
     </mat-card-content>
   </mat-card>
 </ng-container>

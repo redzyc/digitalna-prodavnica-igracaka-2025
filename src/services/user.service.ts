@@ -1,4 +1,4 @@
-import { first, pairwise } from "rxjs";
+
 import { UserModel } from "../models/user.model";
 import { ToyService } from "./toy.service";
 
@@ -23,21 +23,6 @@ export class UserService {
     }
 
     static findUserByEmail(email: string) {
-        if (!localStorage.getItem('users'))
-            localStorage.setItem('users', JSON.stringify([
-                {
-                    firstName: 'User',
-                    lastName: 'Useric',
-                    email: 'user@example.com',
-                    phone: '+38160123456',
-                    password: 'user123',
-                    country: 'Serbia',
-                    city: 'Belgrade',
-                    address: 'Bulevar Mihajla Pupina 10',
-                    toy: 'Bayblade',
-                    data: []
-                }
-            ]))
         const users: UserModel[] = this.getUsers()
         const exactUser = users.find(u => u.email === email)
         if (!exactUser) throw Error('NO_SUCH_USER')
@@ -87,17 +72,13 @@ export class UserService {
         localStorage.removeItem('active')
     }
 
-    // --------------------------
-    // Nova metoda za promenu lozinke
-    // --------------------------
     static async changePassword(currentPassword: string, newPassword: string): Promise<void> {
         const active = this.getActiveUser()
         if (!active) throw Error('NO_ACTIVE_USER')
 
-        // Provera trenutne lozinke
+
         if (active.password !== currentPassword) throw Error('BAD_CURRENT_PASSWORD')
 
-        // Promena lozinke
         const users = this.getUsers()
         const updatedUsers = users.map(u => {
             if (u.email === active.email) {
@@ -106,7 +87,6 @@ export class UserService {
             return u
         })
 
-        // Ažuriranje localStorage
         localStorage.setItem('users', JSON.stringify(updatedUsers))
     }
 }

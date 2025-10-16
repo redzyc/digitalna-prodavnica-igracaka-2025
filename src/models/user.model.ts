@@ -1,4 +1,5 @@
 import { BasketModel } from "./basket.model"
+import { ToyModel } from "./toy.model"
 
 export interface UserModel {
     firstName: string
@@ -9,6 +10,6 @@ export interface UserModel {
     country: string
     city: string
     address: string
-    toy: string
+    toy: ToyModel
     data: BasketModel[]
 }

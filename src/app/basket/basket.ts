@@ -5,15 +5,11 @@ import { ToyModel } from '../../models/toy.model';
 import { ToyService } from '../../services/toy.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NumericLiteral } from 'typescript';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -22,10 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     MatCardModule,
-    MatListModule,
     MatDividerModule,
-    MatFormFieldModule,
-    MatSelectModule,
     MatIconModule,
     FormsModule,
     MatButtonModule
@@ -35,10 +28,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class Basket {
   public numOfProd: number[] = Array.from({ length: 99 }, (_, i) => i + 1);
-  private toyCache: Map<number, ToyModel> = new Map();
   protected toys = signal<ToyModel[]>([]);
+  stars = [1, 2, 3, 4, 5];
 
-  constructor(private basketService: BasketService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(
+    private basketService: BasketService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
     ToyService.getToys()
       .then(rsp => this.toys.set(rsp.data))
       .catch(err => console.error('Error loading toys', err));
@@ -55,36 +52,50 @@ export class Basket {
   getToyImage(toyId: number): string {
     return `https://toy.pequla.com/img/${toyId}.png`;
   }
-  protected goToToy(toyId: Number) {
-    console.log(this.router.navigateByUrl(`/details/${toyId}`))
+
+  goToToy(toyId: number) {
     this.router.navigateByUrl(`/details/${toyId}`);
   }
 
   updateQuantity(item: BasketModel, quantity: number) {
     if (quantity < 1) quantity = 1;
     if (quantity > 99) {
-      this.snackBar.open(`We don't have that much in stock. Max is 99`, 'Close', { 
-    duration: 3500,
-    horizontalPosition: 'center', // centrirano horizontalno
-    verticalPosition: 'top',      // može i 'bottom' ili 'top'
-    panelClass: ['snack-red']     // dodajemo custom klasu
-  });
+      this.snackBar.open(`Max količina je 99`, 'Zatvori', {
+        duration: 3500,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snack-red']
+      });
       quantity = 99;
     }
     item.numOfProd = quantity;
     this.basketService.updateItemQuantity(item.toyId, quantity);
   }
 
-  removeItem(toyId: number) {
-    this.basketService.removeItem(toyId);
+  removeItem(toyId: number, status: 'RESERVED' | 'ARRIVED' | 'CANCELED') {
+    this.basketService.removeItem(toyId, status);
   }
 
-  addItem(toyId: number, quantity: number) {
-    const currentQuantity = this.basketService.getQuantityForToy(toyId);
-    if (currentQuantity + quantity > 99) {
-      this.snackBar.open(`We don't have that much in stock. Max is 99`, 'Close', { duration: 2500 });
-      return;
-    }
-    this.basketService.addItem(toyId, quantity);
+  changeToCancel(item: BasketModel) {
+    this.basketService.updateItemStatus(item.toyId, 'CANCELED');
+    this.snackBar.open('Status promenjen na CANCELED', 'Zatvori', {
+      duration: 2500,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snack-green']
+    });
+  }
+
+  changeToArrived(item: BasketModel) {
+    this.basketService.updateItemStatus(item.toyId, 'ARRIVED');
+    this.snackBar.open('Status promenjen na ARRIVED', 'Zatvori', {
+      duration: 2500,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snack-green']
+    });
+  }
+
+  rateItem() {
   }
 }

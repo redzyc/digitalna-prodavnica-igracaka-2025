@@ -22,36 +22,36 @@ export class BasketService {
     this.updateBasketSignal();
   }
 
-public addItem(toy: ToyModel | number, quantity: number = 1) {
-  if (!UserService.getActiveUser()) return;
+  public addItem(toy: ToyModel | number, quantity: number = 1) {
+    if (!UserService.getActiveUser()) return;
 
-  const toyId = typeof toy === 'number' ? toy : toy.toyId;
+    const toyId = typeof toy === 'number' ? toy : toy.toyId;
 
-  const existing = this.currentBasketItems.find(i => i.toyId === toyId);
+    const existing = this.currentBasketItems.find(i => i.toyId === toyId && i.status === 'RESERVED');
 
-  if (existing) {
-    existing.numOfProd += quantity;
-  } else {
-    const addNew = (t: ToyModel) => {
-      this.currentBasketItems.push({
-        toyId: t.toyId,
-        numOfProd: quantity,
-        price: t.price,
-        status: 'RESERVED',
-        createdAt: new Date().toISOString(),
-        updatedAt: null
-      });
-      this.updateBasketSignal();
-      this.saveToLocalStorage();
-    };
-
-    if (typeof toy === 'number') {
-      ToyService.getToyById(toy).then(r => addNew(r.data));
+    if (existing) {
+      existing.numOfProd += quantity;
     } else {
-      addNew(toy);
+      const addNew = (t: ToyModel) => {
+        this.currentBasketItems.push({
+          toyId: t.toyId,
+          numOfProd: quantity,
+          price: t.price,
+          status: 'RESERVED',
+          createdAt: new Date().toISOString(),
+          updatedAt: null
+        });
+        this.updateBasketSignal();
+        this.saveToLocalStorage();
+      };
+
+      if (typeof toy === 'number') {
+        ToyService.getToyById(toy).then(r => addNew(r.data));
+      } else {
+        addNew(toy);
+      }
     }
   }
-}
 
 
   private loadFromLocalStorage() {
@@ -75,7 +75,7 @@ public addItem(toy: ToyModel | number, quantity: number = 1) {
       items: [...this.currentBasketItems],
       totalPrice,
       totalItemCount: this.currentBasketItems.reduce(
-        (sum,item) => sum+ Number(item.numOfProd),0
+        (sum, item) => sum + Number(item.numOfProd), 0
       ),
       customerEmail: UserService.getActiveUser()?.email ?? null
     });
@@ -93,29 +93,33 @@ public addItem(toy: ToyModel | number, quantity: number = 1) {
     );
   }
 
-public removeItem(toyId: number) {
-  this.currentBasketItems = this.currentBasketItems.filter(i => i.toyId !== toyId);
-  this.updateBasketSignal();
-  this.saveToLocalStorage();
-}
+  public removeItem(toyId: number, status: "RESERVED" | "ARRIVED" | "CANCELED" ) {
+    this.currentBasketItems = this.currentBasketItems.filter(i => !(i.toyId === toyId && i.status === status));
 
-public updateItemQuantity(toyId: number, quantity: number) {
-  const item = this.currentBasketItems.find(i => i.toyId === toyId);
-  if (item) {
-    item.numOfProd = quantity;
     this.updateBasketSignal();
     this.saveToLocalStorage();
   }
-}
-public getQuantityForToy(toyId: number): number {
-  const item = this.currentBasketItems.find(i => i.toyId === toyId);
-  return item ? item.numOfProd : 0;
-}
 
-
-
-
-
-
+  public updateItemQuantity(toyId: number, quantity: number) {
+    const item = this.currentBasketItems.find(i => i.toyId === toyId && i.status === 'RESERVED');
+    if (item) {
+      item.numOfProd = quantity;
+      this.updateBasketSignal();
+      this.saveToLocalStorage();
+    }
+  }
+  public getQuantityForToy(toyId: number): number {
+    const item = this.currentBasketItems.find(i => i.toyId === toyId);
+    return item ? item.numOfProd : 0;
+  }
+  public updateItemStatus(toyId: number, newStatus: "RESERVED" | "ARRIVED" | "CANCELED") {
+    const item = this.currentBasketItems.find(i => i.toyId === toyId);
+    if (item) {
+      item.status = newStatus;
+      item.updatedAt = new Date().toISOString();
+      this.updateBasketSignal();
+      this.saveToLocalStorage();
+    }
+  }
 
 }

@@ -55,7 +55,6 @@ export class Profile {
   }
   saveProfile() {
     try {
-      // Ovdje bi mogao da pozoveš UserService.updateUser ili direktno localStorage
       this.snackBar.open('Profile updated successfully!', 'Close', { duration: 2500 });
     } catch (e) {
       this.snackBar.open('Failed to update profile!', 'Close', { duration: 2500 });
@@ -63,7 +62,7 @@ export class Profile {
   }
 
   editProfile() {
-    // Logika za edit profila
+
     alert('Edit profile clicked!');
   }
 
@@ -72,8 +71,6 @@ export class Profile {
       alert('New passwords do not match!');
       return;
     }
-
-    // Ovde ide poziv servisa za promenu lozinke
     UserService.changePassword(this.currentPassword, this.newPassword)
       .then(() => alert('Password changed successfully!'))
       .catch(err => alert('Failed to change password: ' + err));

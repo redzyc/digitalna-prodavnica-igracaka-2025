@@ -123,7 +123,6 @@ export class Home {
   }
 
 protected checkPriceBounds() {
-  // Ako je min veći od max -> resetuj min na 0
   if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
     alert("Min price can't be higher than max price")
     this.filters.minPriceFilter = this.minPrice;
@@ -134,28 +133,17 @@ protected checkPriceBounds() {
     alert("Max price can't be lower than min price")
     this.filters.maxPriceFilter = this.maxPrice;
   }
-  if(this.filters.maxPriceFilter> this.maxPrice){
-    alert("T most expensive toy is lower than you max value")
-    this.filters.maxPriceFilter = this.maxPrice;
-  }
-  if(this.filters.maxPriceFilter> this.maxPrice){
-    alert("The cheapest toy is higher than you min value")
-    this.filters.maxPriceFilter = this.maxPrice;
-  }
 
-  // Automatski filtriraj igračke
   this.applyFilters();
 }
 
 
   protected applyFilters() {
-    // signal automatski osvežava prikaz
+
   }
 
-  // Uklonjena je nepotrebna formatPrice funkcija
 
   protected resetFilters() {
-    // AŽURIRANO: Resetovanje min/max filtera na stvarni min/max
     this.filters = {
       searchTerm: '',
       selectedTypes: [] as string[],
