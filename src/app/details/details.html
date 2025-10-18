@@ -22,6 +22,17 @@
           <li><mat-icon>child_care</mat-icon> Starosna grupa: {{ t.ageGroup.name }}</li>
           <li><mat-icon>group</mat-icon> Ciljna grupa: {{ t.targetGroup }}</li>
           <li>
+            <mat-icon>reviews</mat-icon> Review:
+            <div class="rating-display">
+              <ng-container *ngFor="let star of [1,2,3,4,5]">
+                <mat-icon [class.filled]="star <= getAverageRating(t)">star</mat-icon>
+              </ng-container>
+              <span class="rating-value">
+                ({{ getAverageRating(t) | number:'1.1-1' }})
+              </span>
+            </div>
+          </li>
+          <li>
             <div class="quantity-controls">
               <button mat-mini-fab color="warn" (click)="decreaseQuantity()">
                 <mat-icon>remove</mat-icon>

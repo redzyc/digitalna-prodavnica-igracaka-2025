@@ -14,13 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { ReviewModel } from '../../models/review.model';
 
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [RouterModule, 
-    FormsModule, 
+  imports: [RouterModule,
+    FormsModule,
     CommonModule,
     MatCardModule,
     MatListModule,
@@ -36,6 +37,7 @@ import { UserService } from '../../services/user.service';
 export class Details {
   protected toy = signal<ToyModel | null>(null);
   protected selectedNum: number = 1;
+  userService: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +59,9 @@ export class Details {
     const toy = this.toy();
     const currentNumOfProd = this.basketService.getQuantityForToy(toy!.toyId)
     if (!toy) return;
-    if ((this.selectedNum + currentNumOfProd) > 99){
+    if ((this.selectedNum + currentNumOfProd) > 99) {
       alert("We don't have that much in stock. The current number in stock is 99")
-      return 
+      return
     }
 
     try {
@@ -77,12 +79,25 @@ export class Details {
     console.log('🧺 Current basket:', basket);
     alert(`Dodali ste ${this.selectedNum}x "${toy.name}" u korpu 🧺`);
   }
+  protected getToyReviews(toyId: number): ReviewModel[] {
+    const reviewsJson = localStorage.getItem('toyReviews');
+    if (!reviewsJson) return [];
+    const reviews: ReviewModel[] = JSON.parse(reviewsJson);
+    return reviews.filter(r => r.toyId === toyId);
+  }
 
-increaseQuantity() {
-  this.selectedNum++;
-}
 
-decreaseQuantity() {
-  if (this.selectedNum > 1) this.selectedNum--;
-}
+  protected getAverageRating(toy: ToyModel) {
+    const reviews = this.getToyReviews(toy.toyId);
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc: number, r: any) => acc + Number(r.rating), 0);
+    return (sum / reviews.length) * 1.0;
+  }
+  increaseQuantity() {
+    this.selectedNum++;
+  }
+
+  decreaseQuantity() {
+    if (this.selectedNum > 1) this.selectedNum--;
+  }
 }

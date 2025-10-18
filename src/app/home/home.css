@@ -86,8 +86,7 @@
 }
 
 .toy-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  transform: scale(1.03);
 }
 
 .toy-image img {
@@ -106,11 +105,32 @@
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
 }
+.toy-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
 
+.rating-value {
+  color: #bbb;
+  font-size: 0.9rem;
+}
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
-
+.sort-field {
+  width: 220px;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.search-field {
+  flex: 0.3;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
