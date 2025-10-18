@@ -56,7 +56,7 @@
             <p><strong>Već ste ocenili ovu igračku. Hvala! ⭐</strong></p>
           </div>
 
-          <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item.toyId, 'ARRIVED')">
+          <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item)">
             <mat-icon>close</mat-icon>
           </button>
         </div>
@@ -75,7 +75,7 @@
         <button mat-stroked-button color="primary" (click)="restoreCanceled(item)">
           Vrati u korpu
         </button>
-         <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item.toyId, 'CANCELED')">
+         <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item)">
             <mat-icon>close</mat-icon>
           </button>
       </div>

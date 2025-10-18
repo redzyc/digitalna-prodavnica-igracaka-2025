@@ -31,11 +31,12 @@ import { ReviewModel } from '../../models/review.model';
 export class Basket {
   protected toys = signal<ToyModel[]>([]);
   stars = [1, 2, 3, 4, 5];
-
+  protected userBasketItems: BasketModel[] = [];
   ratings: { [toyId: number]: number } = {};
   comments: { [toyId: number]: string } = {};
   reviews: (ReviewModel & { toyId: number })[] = [];
   activeUserEmail: string | null = null;
+  basketId: number |null
 
   reservedItems: BasketModel[] = [];
   arrivedItems: BasketModel[] = [];
@@ -48,6 +49,7 @@ export class Basket {
   ) {
     const activeUser = UserService.getActiveUser();
     this.activeUserEmail = activeUser?.email || null;
+    this.basketId = BasketService.getBasketId()
 
     if (!activeUser) {
       alert("You need to be logged in");
@@ -62,10 +64,8 @@ export class Basket {
     const savedReviews = localStorage.getItem('toyReviews');
     if (savedReviews) this.reviews = JSON.parse(savedReviews);
 
-    // inicijalno popuni liste
     this.updateLists();
 
-    // Ako basket signal ima subscribe, slušaj promene
   }
 
   get currentBasket() {
@@ -74,9 +74,10 @@ export class Basket {
 
   private updateLists() {
     const items = this.currentBasket.items ?? [];
-    this.reservedItems = items.filter(i => i.status === 'RESERVED');
-    this.arrivedItems = items.filter(i => i.status === 'ARRIVED');
-    this.canceledItems = items.filter(i => i.status === 'CANCELED');
+     const userItems = items.filter(i => i.userMail === this.activeUserEmail);
+    this.reservedItems = userItems.filter(i => i.status === 'RESERVED');
+    this.arrivedItems = userItems.filter(i => i.status === 'ARRIVED');
+    this.canceledItems = userItems.filter(i => i.status === 'CANCELED');
   }
 
   get hasArrivedItems(): boolean {
@@ -111,26 +112,26 @@ export class Basket {
   }
 
   changeToCancel(item: BasketModel) {
-  this.basketService.updateItemStatus(item.toyId, 'CANCELED');
+  this.basketService.updateItemStatus(item.toyId, 'CANCELED', item.basketId);
   this.showMessage('Status promenjen na CANCELED', 'snack-green');
-  this.updateLists(); // <--- ovde
+  this.updateLists(); 
 }
 
 changeToArrived(item: BasketModel) {
-  this.basketService.updateItemStatus(item.toyId, 'ARRIVED');
+  this.basketService.updateItemStatus(item.toyId, 'ARRIVED', item.basketId);
   this.showMessage('Status promenjen na ARRIVED', 'snack-green');
-  this.updateLists(); // <--- ovde
+  this.updateLists(); 
 }
 
 restoreCanceled(item: BasketModel) {
-  this.basketService.updateItemStatus(item.toyId, 'RESERVED');
+  this.basketService.updateItemStatus(item.toyId, 'RESERVED', item.basketId);
   this.showMessage('Stavka vraćena u korpu', 'snack-green');
-  this.updateLists(); // <--- ovde
+  this.updateLists();
 }
 
-removeItem(toyId: number, status: 'RESERVED' | 'ARRIVED' | 'CANCELED') {
-  this.basketService.removeItem(toyId, status);
-  this.updateLists(); // <--- ovde
+removeItem(item: BasketModel) {
+  this.basketService.removeItem(item.toyId,item.status, item.basketId);
+  this.updateLists(); 
 }
 
   hasUserReviewed(toyId: number, userMail: string | null): boolean {

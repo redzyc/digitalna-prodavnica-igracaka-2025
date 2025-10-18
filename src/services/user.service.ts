@@ -66,7 +66,12 @@ export class UserService {
         }
     }
 
-
+    static getNextBasketId(): number {
+        const lastId = Number(localStorage.getItem('lastBasketId') || '0');
+        const nextId = lastId + 1;
+        localStorage.setItem('lastBasketId', nextId.toString());
+        return nextId;
+    }
 
     static async createReservation(id: number, numOfProd: number) {
         const active = this.getActiveUser()
@@ -77,8 +82,10 @@ export class UserService {
         users.forEach(u => {
             if (u.email === active?.email) {
                 u.data.push({
+                    basketId:this.getNextBasketId(),
                     toyId: id,
                     numOfProd,
+                    userMail: u.email,
                     price: toy.price,
                     status: 'RESERVED',
                     createdAt: new Date().toISOString(),

@@ -21,6 +21,19 @@ export class BasketService {
     this.loadFromLocalStorage();
     this.updateBasketSignal();
   }
+  private getNextBasketId(): number {
+  const lastId = Number(localStorage.getItem('lastBasketId') || '0');
+  const nextId = lastId + 1;
+  localStorage.setItem('lastBasketId', nextId.toString());
+  return nextId;
+}
+
+static getBasketId(): number | null {
+  const basketIdStr = localStorage.getItem('basketId');
+  if (!basketIdStr) return null;
+  const basketId = Number(basketIdStr);
+  return isNaN(basketId) ? null : basketId;
+}
 
   public addItem(toy: ToyModel | number, quantity: number = 1) {
     if (!UserService.getActiveUser()) return;
@@ -34,7 +47,9 @@ export class BasketService {
     } else {
       const addNew = (t: ToyModel) => {
         this.currentBasketItems.push({
+          basketId: this.getNextBasketId(),
           toyId: t.toyId,
+          userMail: UserService.getActiveUser()!.email,
           numOfProd: quantity,
           price: t.price,
           status: 'RESERVED',
@@ -87,20 +102,20 @@ export class BasketService {
 
   private calculateTotalPrice(): number {
     return this.currentBasketItems
-     .filter(item => item.status === 'RESERVED')
+     .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()!.email)
      .reduce((sum, item) => sum + (item.price ?? 0) * item.numOfProd, 0
   );
   }
     private calculateTotalCount():number {
       return this.currentBasketItems
-      .filter(item => item.status === 'RESERVED')
+      .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()!.email)
       .reduce((sum, item) => sum + Number(item.numOfProd), 0
   );
     
   }
 
-  public removeItem(toyId: number, status: "RESERVED" | "ARRIVED" | "CANCELED") {
-    this.currentBasketItems = this.currentBasketItems.filter(i => !(i.toyId === toyId && i.status === status));
+  public removeItem(toyId: number, status: "RESERVED" | "ARRIVED" | "CANCELED", basketId: number) {
+    this.currentBasketItems = this.currentBasketItems.filter(i => !(i.toyId === toyId && i.basketId === basketId && i.status === status));
 
     this.updateBasketSignal();
     this.saveToLocalStorage();
@@ -118,8 +133,8 @@ export class BasketService {
     const item = this.currentBasketItems.find(i => i.toyId === toyId);
     return item ? item.numOfProd : 0;
   }
-  public updateItemStatus(toyId: number, newStatus: "RESERVED" | "ARRIVED" | "CANCELED") {
-    const item = this.currentBasketItems.find(i => i.toyId === toyId);
+  public updateItemStatus(toyId: number, newStatus: "RESERVED" | "ARRIVED" | "CANCELED", basketId: number) {
+    const item = this.currentBasketItems.find(i => i.toyId === toyId && i.basketId === basketId);
     if (item) {
       item.status = newStatus;
       item.updatedAt = new Date().toISOString();
