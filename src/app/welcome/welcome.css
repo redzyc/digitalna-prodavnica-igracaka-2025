@@ -1,0 +1,38 @@
+.welcome-page,
+.welcome-bg {
+    width: 100%;
+    height: 100vh;
+}
+
+.welcome-bg {
+    background-image: url('https://wallpapers.com/images/hd/toys-background-qtmsuk8a0o42c7au.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-content {
+    background: rgba(0, 0, 0, 0.5);
+    /* poluprovidna pozadina za tekst */
+    padding: 40px;
+    border-radius: 15px;
+    color: white;
+}
+
+.welcome-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.welcome-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.shop-btn {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+}

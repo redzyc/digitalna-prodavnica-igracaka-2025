@@ -2,7 +2,7 @@
   <mat-card class="basket-container mat-elevation-z4">
     <mat-card-title>🧺 Tvoja korpa</mat-card-title>
 
-    <!-- RESERVED items -->
+
     <div class="basket-items" *ngIf="reservedItems.length > 0">
       <div class="basket-item" *ngFor="let item of reservedItems">
         <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" (click)="goToToy(item.toyId)" />
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <!-- ARRIVED items -->
+
     <div *ngIf="hasArrivedItems" class="arrived-items">
       <h3>Stavke koje su stigle:</h3>
       <div class="basket-item" *ngFor="let item of arrivedItems">
@@ -47,7 +47,6 @@
                 star
               </mat-icon>
             </div>
-            <textarea [(ngModel)]="comments[item.toyId]" placeholder="Ostavi komentar..." rows="3"></textarea>
             <button mat-raised-button color="primary" (click)="submitReview(item.toyId)" [disabled]="!ratings[item.toyId]">
               Pošalji ocenu
             </button>
@@ -64,15 +63,12 @@
       </div>
     </div>
 
-    <!-- CANCELED items -->
-   <!-- CANCELED items -->
 <div *ngIf="hasCanceledItems" class="canceled-items">
   <h3>Otkazane stavke:</h3>
   <div class="basket-item" *ngFor="let item of canceledItems">
     <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" />
     <div class="item-details">
       <h4>{{ getToyDetails(item.toyId)?.name }}</h4>
-      <p>{{ getToyDetails(item.toyId)?.description }}</p>
       <p>Status: {{ item.status }}</p>
 
       <div class="restore-controls">
@@ -88,7 +84,6 @@
 </div>
 
 
-    <!-- Basket summary -->
     <mat-card-content class="basket-summary">
       <h4>Ukupno: {{ basket.totalPrice | number:'1.0-2' }} RSD</h4>
       <p><strong>Stavki:</strong> {{ basket.totalItemCount }}</p>

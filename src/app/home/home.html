@@ -3,11 +3,14 @@
   <!-- LEVI FILTER PANEL (20%) -->
   <div class="filters glassy-card">
     <h3>Filters</h3>
+    <!-- Sortiranje -->
+
+
 
     <!-- Tip (checkbox lista) -->
     <div class="filter-group">
       <label class="filter-group-label">Type</label>
-      <mat-selection-list [(ngModel)]="filters.selectedTypes" (ngModelChange)="applyFilters()" >
+      <mat-selection-list [(ngModel)]="filters.selectedTypes" (ngModelChange)="applyFilters()">
         <mat-list-option *ngFor="let t of toyTypes()" [value]="t">
           {{ t }}
         </mat-list-option>
@@ -46,24 +49,19 @@
     </div>
 
     <!-- Review -->
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Review contains</mat-label>
-      <input matInput type="text" [(ngModel)]="filters.review" (input)="applyFilters()">
-    </mat-form-field>
-
-    <!-- Minimum Rating Filter -->
     <div class="filter-group">
-      <label class="filter-group-label">Minimum Rating</label>
-      <mat-slider
-        min="0"
-        max="5"
-        step="0.5"
-        thumbLabel
-        [(ngModel)]="minRatingFilter"
-        (change)="applyFilters()">
-      </mat-slider>
-      <p>Selected: {{ minRatingFilter }} ⭐</p>
+      <label class="filter-group-label">Rating</label>
+      <mat-selection-list [(ngModel)]="filters.selectedRating" (ngModelChange)="applyFilters()">
+        <mat-list-option *ngFor="let r of [1,2,3,4,5]" [value]="r">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <mat-icon [class.filled]="star <= r">star</mat-icon>
+          </ng-container>
+        </mat-list-option>
+      </mat-selection-list>
     </div>
+
+
+
 
     <div class="filter-buttons">
       <button mat-raised-button color="accent" (click)="resetFilters()">Reset</button>
@@ -72,8 +70,22 @@
 
   <!-- DESNI DEO (80%) -->
   <div class="main-content">
+
     <!-- Search bar gore desno -->
     <div class="top-bar">
+      <div class="filter-group">
+        <label class="filter-group-label">Sort by</label>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-select [(ngModel)]="sortOption" (selectionChange)="applyFilters()">
+            <mat-option value="priceAsc">Price: Low to High</mat-option>
+            <mat-option value="priceDesc">Price: High to Low</mat-option>
+            <mat-option value="nameAsc">Name: A → Z</mat-option>
+            <mat-option value="nameDesc">Name: Z → A</mat-option>
+            <mat-option value="ratingAsc">Rating: Low to High</mat-option>
+            <mat-option value="ratingDesc">Rating: High to Low</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <mat-form-field appearance="outline" class="search-field">
         <mat-label>Search by name or description</mat-label>
         <input matInput [(ngModel)]="filters.searchTerm" (input)="applyFilters()">

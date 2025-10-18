@@ -36,15 +36,17 @@ export class Home {
   protected filters = {
     searchTerm: '',
     selectedTypes: [] as string[],
+    selectedRating: [] as number[],
     selectedTargetGroups: [] as string[],
     minPriceFilter: 0,
     maxPriceFilter: 0,
     selectedAgeGroup: [] as string[],
-    review: ''
   };
 
   protected toyTypes = signal<string[]>([]);
   protected ageGroups = signal<string[]>([]);
+  protected sortOption: string = '';
+
 
   // Stvarni min/max za slajdere
   protected minPrice: number = 0;
@@ -97,12 +99,12 @@ export class Home {
   protected getAverageRating(toy: ToyModel) {
     const reviews = this.getToyReviews(toy.toyId);
     if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc: number, r: any) => acc + r.rating, 0);
+    const sum = reviews.reduce((acc: number, r: any) => acc + Number(r.rating), 0);
     return sum / reviews.length;
   }
 
   protected filteredToys() {
-    return this.toys().filter(toy => {
+    let toys = this.toys().filter(toy => {
       const pricePass =
         toy.price >= this.filters.minPriceFilter &&
         toy.price <= this.filters.maxPriceFilter;
@@ -125,18 +127,40 @@ export class Home {
         toy.name.toLowerCase().includes(searchTerm) ||
         toy.description.toLowerCase().includes(searchTerm);
 
-      const reviewPass =
-        !this.filters.review ||
-        this.getToyReviews(toy.toyId).some(r =>
-          r.comment.toLowerCase().includes(this.filters.review.toLowerCase())
-        );
+      const ratingPass =
+        this.filters.selectedRating.length === 0 ||
+        this.filters.selectedRating.some(r => {
+          const avg = this.getAverageRating(toy);
+          switch (r) {
+            case 1: return avg >= 1.0 && avg < 1.5;
+            case 2: return avg >= 1.5 && avg < 2.5;
+            case 3: return avg >= 2.5 && avg < 3.5;
+            case 4: return avg >= 3.5 && avg < 4.5;
+            case 5: return avg >= 4.5 && avg <= 5.0;
+            default: return false;
+          }
+        });
 
-      const ratingPass = this.getAverageRating(toy) >= (this.minRatingFilter || 0);
-
-      return pricePass && typePass && groupPass && agePass && searchPass && reviewPass && ratingPass;
+      return pricePass && typePass && groupPass && agePass && searchPass && ratingPass && ratingPass;
     });
-  }
 
+    // Sortiranje
+    if (this.sortOption === 'priceAsc') {
+      toys.sort((a, b) => a.price - b.price);
+    } else if (this.sortOption === 'priceDesc') {
+      toys.sort((a, b) => b.price - a.price);
+    } else if (this.sortOption === 'ratingAsc') {
+      toys.sort((a, b) => this.getAverageRating(a) - this.getAverageRating(b));
+    } else if (this.sortOption === 'ratingDesc') {
+      toys.sort((a, b) => this.getAverageRating(b) - this.getAverageRating(a));
+    } else if (this.sortOption === 'nameAsc') {
+      toys.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (this.sortOption === 'nameDesc') {
+      toys.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    return toys;
+  }
 
   protected checkPriceBounds() {
     if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
@@ -165,8 +189,8 @@ export class Home {
       selectedTargetGroups: [] as string[],
       minPriceFilter: this.minPrice,
       maxPriceFilter: this.maxPrice,
-      selectedAgeGroup: [] as string[],
-      review: ''
+      selectedRating: [] as number[],
+      selectedAgeGroup: [] as string[]
     };
   }
 

@@ -146,3 +146,10 @@
 .toy-rating mat-icon.filled {
   color: gold;
 }
+mat-icon {
+  color: #ccc;
+}
+
+mat-icon.filled {
+  color: #ffc107;
+}
