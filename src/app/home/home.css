@@ -138,3 +138,11 @@
     justify-content: center;
   }
 }
+.toy-rating mat-icon {
+  font-size: 16px;
+  color: gray;
+}
+
+.toy-rating mat-icon.filled {
+  color: gold;
+}

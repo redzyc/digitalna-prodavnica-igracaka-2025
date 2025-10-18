@@ -11,6 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { ReviewModel } from '../../models/review.model';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +32,7 @@ import { MatListModule } from '@angular/material/list';
 })
 export class Home {
   protected toys = signal<ToyModel[]>([]);
+  protected minRatingFilter: number = 0;
   protected filters = {
     searchTerm: '',
     selectedTypes: [] as string[],
@@ -41,12 +43,12 @@ export class Home {
     review: ''
   };
 
-  protected toyTypes: string[] = [];
-  protected ageGroups: string[] = [];
+  protected toyTypes = signal<string[]>([]);
+  protected ageGroups = signal<string[]>([]);
+
   // Stvarni min/max za slajdere
   protected minPrice: number = 0;
   protected maxPrice: number = 1000;
-
   constructor(private router: Router) {
     ToyService.getToys()
       .then(rsp => {
@@ -64,17 +66,15 @@ export class Home {
       .catch(err => console.error('Error loading toys', err));
 
     ToyService.getToyTypes()
-      .then(rsp => {
-        this.toyTypes = rsp.data.map((t: any) => t.name);
-      })
-      .catch(err => console.error('Error loading toy types', err));
-       ToyService.getAgeGroup()
-      .then(rsp => {
-        this.ageGroups = rsp.data.map((t: any) => t.name);
-      })
+      .then(rsp => this.toyTypes.set(rsp.data.map((t: any) => t.name)))
       .catch(err => console.error('Error loading toy types', err));
 
-    
+    ToyService.getAgeGroup()
+      .then(rsp => this.ageGroups.set(rsp.data.map((t: any) => t.name)))
+      .catch(err => console.error('Error loading age groups', err));
+
+
+
   }
 
   protected getImage(toyId: number) {
@@ -85,6 +85,21 @@ export class Home {
   protected goToDetails(id: number) {
     this.router.navigateByUrl(`/details/${id}`);
   }
+  protected getToyReviews(toyId: number): ReviewModel[] {
+    const reviewsJson = localStorage.getItem('toyReviews');
+    if (!reviewsJson) return [];
+    const reviews: ReviewModel[] = JSON.parse(reviewsJson);
+    return reviews.filter(r => r.toyId === toyId);
+  }
+
+
+  // Prosečna ocena
+  protected getAverageRating(toy: ToyModel) {
+    const reviews = this.getToyReviews(toy.toyId);
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc: number, r: any) => acc + r.rating, 0);
+    return sum / reviews.length;
+  }
 
   protected filteredToys() {
     return this.toys().filter(toy => {
@@ -92,15 +107,15 @@ export class Home {
         toy.price >= this.filters.minPriceFilter &&
         toy.price <= this.filters.maxPriceFilter;
 
-      const typeArr =
+      const typePass =
         this.filters.selectedTypes.length === 0 ||
         this.filters.selectedTypes.includes(toy.type.name);
 
-      const groupArr =
+      const groupPass =
         this.filters.selectedTargetGroups.length === 0 ||
         this.filters.selectedTargetGroups.includes(toy.targetGroup.toLowerCase());
 
-      const ageArr =
+      const agePass =
         this.filters.selectedAgeGroup.length === 0 ||
         this.filters.selectedAgeGroup.includes(toy.ageGroup.name);
 
@@ -112,30 +127,30 @@ export class Home {
 
       const reviewPass =
         !this.filters.review ||
-        toy.reviews.some(r =>
-          r.comment.toLowerCase().includes(this.filters.review.toLowerCase()) ||
-          r.userName.toLowerCase().includes(this.filters.review.toLowerCase())
+        this.getToyReviews(toy.toyId).some(r =>
+          r.comment.toLowerCase().includes(this.filters.review.toLowerCase())
         );
 
-      return pricePass && typeArr && groupArr && searchPass && reviewPass && ageArr;
+      const ratingPass = this.getAverageRating(toy) >= (this.minRatingFilter || 0);
+
+      return pricePass && typePass && groupPass && agePass && searchPass && reviewPass && ratingPass;
     });
-    
   }
 
-protected checkPriceBounds() {
-  if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
-    alert("Min price can't be higher than max price")
-    this.filters.minPriceFilter = this.minPrice;
-  }
 
-  // Ako je max manji od min -> resetuj max na stvarni maksimum
-  if (this.filters.maxPriceFilter < this.filters.minPriceFilter) {
-    alert("Max price can't be lower than min price")
-    this.filters.maxPriceFilter = this.maxPrice;
-  }
+  protected checkPriceBounds() {
+    if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
+      alert("Min price can't be higher than max price")
+      this.filters.minPriceFilter = this.minPrice;
+    }
 
-  this.applyFilters();
-}
+    if (this.filters.maxPriceFilter < this.filters.minPriceFilter) {
+      alert("Max price can't be lower than min price")
+      this.filters.maxPriceFilter = this.maxPrice;
+    }
+
+    this.applyFilters();
+  }
 
 
   protected applyFilters() {

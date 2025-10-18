@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToyService } from '../../services/toy.service';
-import { MatOption, MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { ToyModel } from '../../models/toy.model';
 
 @Component({
@@ -20,22 +20,21 @@ import { ToyModel } from '../../models/toy.model';
   standalone: true,
   imports: [
     CommonModule,
-  FormsModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatButtonModule,
-  MatIconModule,
-  MatCardModule,
-  MatDividerModule,
-  MatOption
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatDividerModule
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
 export class Profile {
-   protected currentUser = signal<UserModel | null>(UserService.getActiveUser());
-   toys: ToyModel[] = [];
+  protected currentUser = signal<UserModel | null>(null);
+  protected toys = signal<string[]>([]);
 
   currentPassword = '';
   newPassword = '';
@@ -43,27 +42,41 @@ export class Profile {
 
   constructor(private router: Router, private snackBar: MatSnackBar) {
     try {
+      // Uzmi trenutno aktivnog korisnika
       const user = UserService.getActiveUser();
       this.currentUser.set(user ?? null);
     } catch (e) {
       alert('No active user!');
       this.router.navigateByUrl('/login');
+      return;
     }
-     ToyService.getToys()
-      .then((rsp) => this.toys = (rsp.data))
-      .catch((err) => console.error('Error loading toys', err));
+
+    ToyService.getToys()
+      .then(rsp => {
+        const toyNames = rsp.data.map((toy: ToyModel) => toy.name);
+        this.toys.set(toyNames);
+
+        const user = this.currentUser();
+        if (user && user.toy && !toyNames.includes(user.toy)) {
+          user.toy = '';
+        }
+        this.currentUser.set({ ...user! });
+      })
+      .catch(err => console.error('Error loading toys', err));
   }
+
   saveProfile() {
+    const user = this.currentUser();
+    if (!user) return;
+
     try {
+
+      UserService.updateUser(user); 
       this.snackBar.open('Profile updated successfully!', 'Close', { duration: 2500 });
     } catch (e) {
+      console.error(e);
       this.snackBar.open('Failed to update profile!', 'Close', { duration: 2500 });
     }
-  }
-
-  editProfile() {
-
-    alert('Edit profile clicked!');
   }
 
   changePassword() {
@@ -71,8 +84,17 @@ export class Profile {
       alert('New passwords do not match!');
       return;
     }
+
     UserService.changePassword(this.currentPassword, this.newPassword)
-      .then(() => alert('Password changed successfully!'))
-      .catch(err => alert('Failed to change password: ' + err));
+      .then(() => {
+        this.snackBar.open('Password changed successfully!', 'Close', { duration: 2500 });
+        // Resetuj polja
+        this.currentPassword = '';
+        this.newPassword = '';
+        this.confirmPassword = '';
+      })
+      .catch(err => {
+        this.snackBar.open('Failed to change password: ' + err, 'Close', { duration: 3500 });
+      });
   }
 }

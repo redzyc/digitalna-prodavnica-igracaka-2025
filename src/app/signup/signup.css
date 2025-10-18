@@ -1,4 +1,5 @@
-.signup-card {
+/* Osnovna kartica */
+.signup-card, .login-card {
   max-width: 600px;
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(10px);
@@ -8,6 +9,7 @@
   color: #fff;
 }
 
+/* Naslov kartice */
 .card-header h5 {
   font-weight: 700;
   font-size: 1.5rem;
@@ -16,15 +18,24 @@
   -webkit-text-fill-color: transparent;
 }
 
+/* Input polja i select elementi */
 .form-control, .form-select {
   background: rgba(255,255,255,0.1);
-  border: none;
+  border: 1px solid #555;
+  border-radius: 0.5rem;
   color: #fff;
+  transition: all 0.3s ease;
 }
 
 .form-control::placeholder {
   color: #ccc;
 }
+.form-control:focus, .form-select:focus {
+  outline: none;
+  border-color: #ff8a00;
+  box-shadow: 0 0 0 2px rgba(255,138,0,0.3);
+}
+
 
 .btn-primary {
   background: #ff8a00;
@@ -40,4 +51,26 @@
 .btn-link {
   color: #fff;
   text-decoration: underline;
+}
+
+select.form-select {
+  background-color: rgba(30,30,30,1);  
+  color: #fff;               
+  border: 1px solid #555;     
+}
+
+
+.mat-select-panel {
+  background-color: #1e1e1e ;
+  color: #fff ;
+}
+
+.mat-option {
+  background-color: #1e1e1e ;
+  color: #fff ;
+}
+
+.mat-option:hover {
+  background-color: #333 ;
+  color: #ffd700 ;
 }

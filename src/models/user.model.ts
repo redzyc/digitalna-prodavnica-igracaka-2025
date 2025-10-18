@@ -10,6 +10,6 @@ export interface UserModel {
     country: string
     city: string
     address: string
-    toy: ToyModel
+    toy: string
     data: BasketModel[]
 }

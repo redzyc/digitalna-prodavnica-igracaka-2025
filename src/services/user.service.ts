@@ -1,4 +1,5 @@
 
+import { ToyModel } from "../models/toy.model";
 import { UserModel } from "../models/user.model";
 import { ToyService } from "./toy.service";
 
@@ -35,17 +36,37 @@ export class UserService {
         localStorage.setItem('active', user.email)
     }
 
-    static singup(playload: UserModel) {
+    static signup(playload: UserModel) {
         const users: UserModel[] = this.getUsers()
         users.push(playload)
         localStorage.setItem('users', JSON.stringify(users))
         this.login(playload.email, playload.password)
     }
+    static updateUser(updatedUser: UserModel) {
+        const users = this.getUsers();
+        const updatedUsers = users.map(u => {
+            if (u.email === updatedUser.email) {
+                return { ...u, ...updatedUser };
+            }
+            return u;
+        });
 
-    static getActiveUser() {
-        if (!localStorage.getItem('active')) throw Error('NO_ACTIVE_USER')
-        return this.findUserByEmail(localStorage.getItem('active')!)
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+        localStorage.setItem('active', updatedUser.email);
     }
+
+
+    static getActiveUser(): UserModel | null {
+        const email = localStorage.getItem('active');
+        if (!email) return null;
+        try {
+            return this.findUserByEmail(email);
+        } catch {
+            return null;
+        }
+    }
+
+
 
     static async createReservation(id: number, numOfProd: number) {
         const active = this.getActiveUser()

@@ -36,7 +36,4 @@ export class Login {
       alert('Check your login params!');
     }
   }
-  protected goToSingUp() {
-    this.router.navigateByUrl(`/singup`);
-  }
 }

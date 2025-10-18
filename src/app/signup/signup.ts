@@ -5,21 +5,22 @@ import { UserService } from '../../services/user.service';
 import { MainService } from '../../services/main.service';
 import { CommonModule } from '@angular/common';
 import { ToyService } from '../../services/toy.service';
+import { ToyModel } from '../../models/toy.model';
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-signp',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink, CommonModule],
-  templateUrl: './singup.html',
-  styleUrls: ['./singup.css']
+  templateUrl: './signup.html',
+  styleUrls: ['./signup.css']
 })
-export class Singup {
+export class Signup {
   protected form: FormGroup;
   protected toys = signal<string[]>([]);
 
   constructor(private formBuilder: FormBuilder, protected router: Router) {
-    ToyService.getFavToys()
-      .then(rsp => this.toys.set(rsp))
+    ToyService.getToys()
+      .then(rsp => this.toys.set(rsp.data.map((toy: ToyModel) => toy.name))) // samo imena
       .catch(err => console.error('Error loading toys', err));
 
     this.form = this.formBuilder.group({
@@ -50,7 +51,7 @@ export class Singup {
     try {
       const formValue: any = { ...this.form.value };
       delete formValue.repeat;
-      UserService.singup(formValue);
+      UserService.signup(formValue);
       this.router.navigateByUrl('/login');
     } catch (e) {
       console.error(e);

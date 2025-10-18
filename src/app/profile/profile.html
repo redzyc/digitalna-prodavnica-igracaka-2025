@@ -8,8 +8,6 @@
   <mat-card-content>
     <form (ngSubmit)="saveProfile()" #profileForm="ngForm">
       <div class="profile-grid">
-
-        <!-- Levi deo -->
         <div class="profile-section">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>First Name</mat-label>
@@ -27,25 +25,21 @@
           </mat-form-field>
         </div>
 
-        <!-- Desni deo -->
         <div class="profile-section">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Phone</mat-label>
             <input matInput [(ngModel)]="currentUser()!.phone" name="phone">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-label >Favourite Toy</mat-label>
+          <mat-form-field appearance="fill" class="w-100" *ngIf="toys().length > 0">
+            <mat-label>Favourite Toy</mat-label>
             <mat-select [(ngModel)]="currentUser()!.toy" name="toy">
-              <mat-option *ngFor="let toy of toys" [value]="toy.name">
-                {{ toy.name }}
+              <mat-option *ngFor="let t of toys()" [value]="t">
+                {{ t }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-
-
-
-
+          
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Address</mat-label>
             <input matInput [(ngModel)]="currentUser()!.address" name="address">

@@ -1,6 +1,7 @@
 export interface ReviewModel{
     id:number
-    userId: number
+    toyId: number
+    userMail: string
     userName: string
     rating: string
     comment: string

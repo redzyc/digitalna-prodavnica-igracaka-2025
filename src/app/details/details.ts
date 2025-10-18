@@ -62,11 +62,11 @@ export class Details {
       return 
     }
 
-    let activeUser = null;
     try {
-      activeUser = UserService.getActiveUser();
+      let activeUser = UserService.getActiveUser();
       if (!activeUser) throw new Error('No active user');
     } catch (e) {
+      alert("You need to be logged")
       sessionStorage.setItem('ref', this.router.url);
       this.router.navigateByUrl('/login');
       return;

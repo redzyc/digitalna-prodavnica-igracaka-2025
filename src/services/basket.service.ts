@@ -71,12 +71,11 @@ export class BasketService {
 
   private updateBasketSignal() {
     const totalPrice = this.calculateTotalPrice();
+    const totalItemCount = this.calculateTotalCount();
     this.basketSignal.set({
       items: [...this.currentBasketItems],
-      totalPrice,
-      totalItemCount: this.currentBasketItems.reduce(
-        (sum, item) => sum + Number(item.numOfProd), 0
-      ),
+      totalPrice: this.calculateTotalPrice(),
+      totalItemCount: this.calculateTotalCount(),
       customerEmail: UserService.getActiveUser()?.email ?? null
     });
   }
@@ -87,13 +86,20 @@ export class BasketService {
   }
 
   private calculateTotalPrice(): number {
-    return this.currentBasketItems.reduce(
-      (sum, item) => sum + (item.price ?? 0) * item.numOfProd, 0
-
-    );
+    return this.currentBasketItems
+     .filter(item => item.status === 'RESERVED')
+     .reduce((sum, item) => sum + (item.price ?? 0) * item.numOfProd, 0
+  );
+  }
+    private calculateTotalCount():number {
+      return this.currentBasketItems
+      .filter(item => item.status === 'RESERVED')
+      .reduce((sum, item) => sum + Number(item.numOfProd), 0
+  );
+    
   }
 
-  public removeItem(toyId: number, status: "RESERVED" | "ARRIVED" | "CANCELED" ) {
+  public removeItem(toyId: number, status: "RESERVED" | "ARRIVED" | "CANCELED") {
     this.currentBasketItems = this.currentBasketItems.filter(i => !(i.toyId === toyId && i.status === status));
 
     this.updateBasketSignal();
@@ -101,7 +107,7 @@ export class BasketService {
   }
 
   public updateItemQuantity(toyId: number, quantity: number) {
-    const item = this.currentBasketItems.find(i => i.toyId === toyId && i.status === 'RESERVED');
+    const item = this.currentBasketItems.find(i => i.toyId === toyId);
     if (item) {
       item.numOfProd = quantity;
       this.updateBasketSignal();
@@ -121,5 +127,11 @@ export class BasketService {
       this.saveToLocalStorage();
     }
   }
+  restoreCanceled(item: BasketModel) {
+  item.status = 'RESERVED';
+  this.updateBasketSignal();
+  this.saveToLocalStorage();
+}
+
 
 }

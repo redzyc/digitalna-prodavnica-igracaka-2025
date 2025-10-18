@@ -8,7 +8,7 @@
     <div class="filter-group">
       <label class="filter-group-label">Type</label>
       <mat-selection-list [(ngModel)]="filters.selectedTypes" (ngModelChange)="applyFilters()" >
-        <mat-list-option *ngFor="let t of toyTypes" [value]="t">
+        <mat-list-option *ngFor="let t of toyTypes()" [value]="t">
           {{ t }}
         </mat-list-option>
       </mat-selection-list>
@@ -16,7 +16,7 @@
     <div class="filter-group">
       <label class="filter-group-label">Age Group</label>
       <mat-selection-list [(ngModel)]="filters.selectedAgeGroup" (ngModelChange)="applyFilters()">
-        <mat-list-option *ngFor="let t of ageGroups" [value]="t">
+        <mat-list-option *ngFor="let t of ageGroups()" [value]="t">
           {{ t }}
         </mat-list-option>
       </mat-selection-list>
@@ -51,6 +51,20 @@
       <input matInput type="text" [(ngModel)]="filters.review" (input)="applyFilters()">
     </mat-form-field>
 
+    <!-- Minimum Rating Filter -->
+    <div class="filter-group">
+      <label class="filter-group-label">Minimum Rating</label>
+      <mat-slider
+        min="0"
+        max="5"
+        step="0.5"
+        thumbLabel
+        [(ngModel)]="minRatingFilter"
+        (change)="applyFilters()">
+      </mat-slider>
+      <p>Selected: {{ minRatingFilter }} ⭐</p>
+    </div>
+
     <div class="filter-buttons">
       <button mat-raised-button color="accent" (click)="resetFilters()">Reset</button>
     </div>
@@ -81,6 +95,15 @@
           <p class="toy-description">{{ toy.description }}</p>
           <p class="toy-age">Age: {{ toy.ageGroup.name }}</p>
           <p class="toy-price">Price: {{ toy.price }} RSD</p>
+
+          <!-- Prikaz prosečne ocene -->
+          <p class="toy-rating">
+            Average Rating:
+            <ng-container *ngFor="let star of [1,2,3,4,5]">
+              <mat-icon [class.filled]="star <= getAverageRating(toy)">star</mat-icon>
+            </ng-container>
+            ({{ getAverageRating(toy) | number:'1.1-1' }})
+          </p>
         </div>
 
         <div class="toy-footer text-center">
