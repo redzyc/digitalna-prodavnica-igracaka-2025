@@ -47,7 +47,6 @@ export class Basket {
   ) {
     const activeUser = UserService.getActiveUser();
     this.activeUserEmail = activeUser?.email || null;
-
     if (!activeUser) {
       alert("You need to be logged in");
       this.router.navigateByUrl('/login');

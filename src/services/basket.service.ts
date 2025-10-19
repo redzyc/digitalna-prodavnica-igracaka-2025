@@ -103,13 +103,13 @@ static getBasketId(): number | null {
 
   private calculateTotalPrice(): number {
     return this.currentBasketItems
-     .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()!.email)
+     .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()?.email)
      .reduce((sum, item) => sum + (item.price ?? 0) * item.numOfProd, 0
   );
   }
     private calculateTotalCount():number {
       return this.currentBasketItems
-      .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()!.email)
+      .filter(item => item.status === 'RESERVED' && item.userMail === UserService.getActiveUser()?.email)
       .reduce((sum, item) => sum + Number(item.numOfProd), 0
   );
     
