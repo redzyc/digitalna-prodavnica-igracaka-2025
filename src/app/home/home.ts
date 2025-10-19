@@ -157,23 +157,24 @@ export class Home {
     return toys;
   }
 
-  protected checkPriceBounds() {
-    if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
-      alert("Min price can't be higher than max price")
-      this.filters.minPriceFilter = this.minPrice;
-    }
 
-    if (this.filters.maxPriceFilter < this.filters.minPriceFilter) {
-      alert("Max price can't be lower than min price")
-      this.filters.maxPriceFilter = this.maxPrice;
-    }
-
-    this.applyFilters();
-  }
 
 
   protected applyFilters() {
 
+  }
+  public checkPriceBounds() {
+    if (this.filters.minPriceFilter > this.filters.maxPriceFilter) {
+      alert("Min price can't be higher than max price");
+      this.filters.minPriceFilter = this.minPrice;
+    }
+
+    if (this.filters.maxPriceFilter < this.filters.minPriceFilter) {
+      alert("Max price can't be lower than min price");
+      this.filters.maxPriceFilter = this.maxPrice;
+    }
+
+    this.applyFilters();
   }
 
 

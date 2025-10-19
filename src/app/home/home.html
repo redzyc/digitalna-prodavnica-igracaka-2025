@@ -30,12 +30,12 @@
     <div class="price-inputs">
       <mat-form-field appearance="fill" class="half-width">
         <mat-label>Min Price</mat-label>
-        <input matInput type="number" [(ngModel)]="filters.minPriceFilter" (input)="checkPriceBounds()">
+        <input matInput type="number" [(ngModel)]="filters.minPriceFilter" (keyup.enter)="checkPriceBounds()">
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="half-width">
         <mat-label>Max Price</mat-label>
-        <input matInput type="number" [(ngModel)]="filters.maxPriceFilter" (input)="checkPriceBounds()">
+        <input matInput type="number" [(ngModel)]="filters.maxPriceFilter"  (keyup.enter)="checkPriceBounds()">
       </mat-form-field>
     </div>
 
