@@ -24,25 +24,7 @@ export class ToyService {
     static async getToyById(id: number) {
         return await client.get(`/toy/${id}`)
     }
-    static async getFavToys(){
-        try {
-      const response = await axios.get<string[]>('toys.json');
-      return response.data;
-    } catch (err) {
-      console.error('Error loading toys', err);
-      return [];
-    }
-    }
 
-    static async addReview(toy: ToyModel, review: ReviewModel) {
-        const t = this.getToyById(toy.toyId)
 
-        if (await t) {
-            toy.reviews.push(review);
-            console.log(`Review added locally to toy: ${toy.name}`);
-        } else {
-            console.error(`Toy ID ${t} not found in local state to add review.`);
-        }
-    }
 
 }

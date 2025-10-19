@@ -97,14 +97,12 @@
   margin-top: 2rem;
 }
 
-/* Dodatno za ARRIVED */
 .arrived-items .basket-item {
-  border-left: 4px solid #00ff7f; /* zelena boja */
+  border-left: 4px solid #00ff7f;
   background-color: #303030;
 }
 
-/* Dodatno za CANCELED */
-/* Dugmad u CANCELED sekciji */
+
 .canceled-items .status-controls,
 .canceled-items .restore-controls {
   display: flex;
@@ -120,13 +118,12 @@
   vertical-align: middle;
 }
 
-/* Stil sličan RESERVED Cancel/Arrived */
+
 .canceled-items button.mat-stroked-button {
   border-radius: 4px;
   border-width: 1px;
 }
 
-/* Naslovi sekcija */
 .arrived-items h3 {
   color: #00ff7f;
   margin-bottom: 0.5rem;

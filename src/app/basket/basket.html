@@ -5,7 +5,7 @@
 
     <div class="basket-items" *ngIf="reservedItems.length > 0">
       <div class="basket-item" *ngFor="let item of reservedItems">
-        <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" (click)="goToToy(item.toyId)" />
+        <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image"/>
         <div class="item-details">
           <h4>{{ getToyDetails(item.toyId)?.name || 'Učitavanje...' }}</h4>
           <p>{{ getToyDetails(item.toyId)?.description || 'Učitavanje...' }}</p>
@@ -32,7 +32,7 @@
 
 
     <div *ngIf="hasArrivedItems" class="arrived-items">
-      <h3>Stavke koje su stigle:</h3>
+      <h3>Arrived toys:</h3>
       <div class="basket-item" *ngFor="let item of arrivedItems">
         <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" />
         <div class="item-details">
@@ -41,7 +41,7 @@
           <p>Status: {{ item.status }}</p>
 
           <div *ngIf="!hasUserReviewed(item.toyId, activeUserEmail)" class="rating-section">
-            <p><strong>Oceni igračku:</strong></p>
+            <p><strong>Review toy:</strong></p>
             <div class="stars">
               <mat-icon *ngFor="let star of stars" (click)="selectRating(item.toyId, star)" [class.filled]="star <= (ratings[item.toyId] || 0)">
                 star
@@ -53,7 +53,7 @@
           </div>
 
           <div *ngIf="hasUserReviewed(item.toyId, activeUserEmail)">
-            <p><strong>Već ste ocenili ovu igračku. Hvala! ⭐</strong></p>
+            <p><strong>You already gave a review</strong></p>
           </div>
 
           <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item)">
@@ -64,21 +64,16 @@
     </div>
 
 <div *ngIf="hasCanceledItems" class="canceled-items">
-  <h3>Otkazane stavke:</h3>
+  <h3>Canceled toys:</h3>
   <div class="basket-item" *ngFor="let item of canceledItems">
     <img class="toy-image" [src]="getToyImage(item.toyId)" alt="Toy image" />
     <div class="item-details">
       <h4>{{ getToyDetails(item.toyId)?.name }}</h4>
+      <p>{{ getToyDetails(item.toyId)?.description }}</p>
       <p>Status: {{ item.status }}</p>
-
-      <div class="restore-controls">
-        <button mat-stroked-button color="primary" (click)="restoreCanceled(item)">
-          Vrati u korpu
-        </button>
-         <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item)">
+      <button mat-icon-button color="warn" class="remove-item-btn" (click)="removeItem(item)">
             <mat-icon>close</mat-icon>
           </button>
-      </div>
     </div>
   </div>
 </div>

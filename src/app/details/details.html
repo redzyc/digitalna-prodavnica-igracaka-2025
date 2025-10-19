@@ -1,12 +1,11 @@
 <ng-container *ngIf="toy() as t; else noToy">
   <div class="toy-details-container fade-in">
 
-    <!-- Slika leve strane -->
     <div class="toy-image">
       <img class="toy-img" [src]="getImage(t.toyId)" alt="{{ t.name }}" />
     </div>
 
-    <!-- Detalji desne strane -->
+
     <mat-card class="toy-info mat-elevation-z4">
       <mat-card-header>
         <mat-card-title>{{ t.name }}</mat-card-title>

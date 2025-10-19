@@ -4,6 +4,7 @@ import { BasketModel } from '../models/basket.model';
 import { BasketStateModel } from '../models/basket_state.model';
 import { UserService } from './user.service';
 import { ToyService } from './toy.service';
+import { ReviewModel } from '../models/review.model';
 
 export class BasketService {
 
@@ -147,6 +148,17 @@ static getBasketId(): number | null {
   this.updateBasketSignal();
   this.saveToLocalStorage();
 }
-
+    public getAverageRating(toyId: number): number {
+        const reviews = this.getReviewsForToy(toyId);
+        if (reviews.length === 0) return 0;
+        const sum = reviews.reduce((acc, r) => acc + Number(r.rating), 0);
+        return sum / reviews.length;
+    }
+    public getReviewsForToy(toyId: number): ReviewModel[] {
+        const reviewsJson = localStorage.getItem('toyReviews');
+        if (!reviewsJson) return [];
+        const reviews: ReviewModel[] = JSON.parse(reviewsJson);
+        return reviews.filter(r => r.toyId === toyId);
+    }
 
 }

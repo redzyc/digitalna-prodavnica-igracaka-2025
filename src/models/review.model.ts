@@ -4,7 +4,6 @@ export interface ReviewModel{
     userMail: string
     userName: string
     rating: string
-    comment: string
     createdAt: string
     updatedAt: string | null
     

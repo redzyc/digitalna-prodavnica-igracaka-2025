@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { BasketService } from '../../services/basket.service';
-import { BasketModel } from '../../models/basket.model';
 import { ToyModel } from '../../models/toy.model';
 import { ToyService } from '../../services/toy.service';
 import { CommonModule } from '@angular/common';
@@ -42,7 +41,7 @@ export class Details {
   constructor(
     private route: ActivatedRoute,
     private basketService: BasketService,
-    private router: Router
+    private router: Router,
   ) {
     this.route.params.subscribe((params: any) => {
       ToyService.getToyById(params.id)
@@ -74,25 +73,17 @@ export class Details {
       return;
     }
 
-    await this.basketService.addItem(toy, this.selectedNum);
-    const basket = await this.basketService.getBasket();
-    console.log('🧺 Current basket:', basket);
-    alert(`Dodali ste ${this.selectedNum}x "${toy.name}" u korpu 🧺`);
+    this.basketService.addItem(toy, this.selectedNum);
+    const basket = this.basketService.getBasket();
+    alert(`You added ${this.selectedNum}x "${toy.name}" in BAG`);
   }
-  protected getToyReviews(toyId: number): ReviewModel[] {
-    const reviewsJson = localStorage.getItem('toyReviews');
-    if (!reviewsJson) return [];
-    const reviews: ReviewModel[] = JSON.parse(reviewsJson);
-    return reviews.filter(r => r.toyId === toyId);
-  }
-
-
   protected getAverageRating(toy: ToyModel) {
-    const reviews = this.getToyReviews(toy.toyId);
-    if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc: number, r: any) => acc + Number(r.rating), 0);
-    return (sum / reviews.length) * 1.0;
+    return this.basketService.getAverageRating(toy.toyId);
   }
+    protected getReviewsForToy(toy: ToyModel) {
+    return this.basketService.getReviewsForToy(toy.toyId);
+  }
+
   increaseQuantity() {
     this.selectedNum++;
   }

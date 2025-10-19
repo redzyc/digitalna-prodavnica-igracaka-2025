@@ -1,4 +1,4 @@
-/* Osnovna kartica */
+
 .signup-card, .login-card {
   max-width: 600px;
   background: rgba(255,255,255,0.05);
@@ -9,7 +9,6 @@
   color: #fff;
 }
 
-/* Naslov kartice */
 .card-header h5 {
   font-weight: 700;
   font-size: 1.5rem;
@@ -18,7 +17,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Input polja i select elementi */
 .form-control, .form-select {
   background: rgba(255,255,255,0.1);
   border: 1px solid #555;

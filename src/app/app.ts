@@ -2,8 +2,6 @@ import { Component, signal } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';  // <-- dodaj ovo
 import { UserService } from '../services/user.service';
-
-// Angular Material moduli
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,  // <-- ovde je bitno
+    CommonModule,
     RouterOutlet,
     RouterLink,
     MatToolbarModule,

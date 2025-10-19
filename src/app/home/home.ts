@@ -48,7 +48,6 @@ export class Home {
   protected sortOption: string = '';
 
 
-  // Stvarni min/max za slajdere
   protected minPrice: number = 0;
   protected maxPrice: number = 1000;
   constructor(private router: Router) {
@@ -61,7 +60,6 @@ export class Home {
         this.minPrice = prices.length > 0 ? Math.min(...prices) : 0;
         this.maxPrice = prices.length > 0 ? Math.max(...prices) : 1000;
 
-        // Inicijalno postavljanje filtera na ceo opseg
         this.filters.minPriceFilter = this.minPrice;
         this.filters.maxPriceFilter = this.maxPrice;
       })
@@ -82,7 +80,6 @@ export class Home {
   protected getImage(toyId: number) {
     return `https://toy.pequla.com/img/${toyId}.png`;
   }
-  sliderValue: number = 50;
 
   protected goToDetails(id: number) {
     this.router.navigateByUrl(`/details/${id}`);
@@ -95,7 +92,6 @@ export class Home {
   }
 
 
-  // Prosečna ocena
   protected getAverageRating(toy: ToyModel) {
     const reviews = this.getToyReviews(toy.toyId);
     if (reviews.length === 0) return 0;
@@ -144,7 +140,6 @@ export class Home {
       return pricePass && typePass && groupPass && agePass && searchPass && ratingPass && ratingPass;
     });
 
-    // Sortiranje
     if (this.sortOption === 'priceAsc') {
       toys.sort((a, b) => a.price - b.price);
     } else if (this.sortOption === 'priceDesc') {

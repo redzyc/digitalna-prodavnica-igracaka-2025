@@ -2,7 +2,7 @@
 
 @import '@angular/material/prebuilt-themes/purple-green.css';
 
-/* FIXED TOOLBAR */
+
 .fixed-toolbar {
   position: fixed;
   top: 0;
@@ -12,7 +12,7 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Toolbar container */
+
 .toolbar-container {
   display: flex;
   align-items: center;
@@ -20,24 +20,24 @@
   padding: 0 1rem;
 }
 
-/* Spacer between left and right */
+
 .toolbar-spacer {
   flex: 1 1 auto;
 }
 
-/* Desktop nav */
+
 .desktop-nav {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-/* Mobile menu button */
+
 .mobile-menu-button {
   display: none;
 }
 
-/* Brand styling */
+
 .app-brand {
   display: flex;
   align-items: center;
@@ -46,19 +46,19 @@
   font-size: 1.25rem;
 }
 
-/* Gradient text */
+
 .text-gradient {
   background: linear-gradient(90deg, #ff8a00, #e52e71);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Active link */
+
 .active-link {
   border-bottom: 2px solid #fff;
 }
 
-/* Mobile responsiveness */
+
 @media (max-width: 768px) {
   .desktop-nav {
     display: none;
@@ -68,23 +68,22 @@
   }
 }
 
-/* Sidenav container adjustments */
 mat-sidenav-container {
-  margin-top: 64px; /* visina toolbar-a */
+  margin-top: 64px; 
   min-height: calc(100vh - 64px);
 }
 
-/* Main content area */
+
 .main-content-area {
   padding: 1rem;
 }
 
-/* Mobile sidenav */
+
 .mobile-sidenav {
   width: 250px;
 }
 
-/* Optional: toolbar icons size */
+
 .mat-toolbar mat-icon {
   vertical-align: middle;
 }

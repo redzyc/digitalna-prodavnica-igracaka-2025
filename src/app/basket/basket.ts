@@ -33,10 +33,8 @@ export class Basket {
   stars = [1, 2, 3, 4, 5];
   protected userBasketItems: BasketModel[] = [];
   ratings: { [toyId: number]: number } = {};
-  comments: { [toyId: number]: string } = {};
   reviews: (ReviewModel & { toyId: number })[] = [];
   activeUserEmail: string | null = null;
-  basketId: number |null
 
   reservedItems: BasketModel[] = [];
   arrivedItems: BasketModel[] = [];
@@ -49,7 +47,6 @@ export class Basket {
   ) {
     const activeUser = UserService.getActiveUser();
     this.activeUserEmail = activeUser?.email || null;
-    this.basketId = BasketService.getBasketId()
 
     if (!activeUser) {
       alert("You need to be logged in");
@@ -68,7 +65,7 @@ export class Basket {
 
   }
 
-  get currentBasket() {
+  protected get currentBasket() {
     return this.basketService.basketSignal();
   }
 
@@ -80,78 +77,69 @@ export class Basket {
     this.canceledItems = userItems.filter(i => i.status === 'CANCELED');
   }
 
-  get hasArrivedItems(): boolean {
+  protected get hasArrivedItems(): boolean {
     return this.arrivedItems.length > 0;
   }
 
-  get hasCanceledItems(): boolean {
+  protected get hasCanceledItems(): boolean {
     return this.canceledItems.length > 0;
   }
 
-  getToyDetails(toyId: number): ToyModel | undefined {
+  protected getToyDetails(toyId: number): ToyModel | undefined {
     return this.toys().find(t => t.toyId === toyId);
   }
 
-  getToyImage(toyId: number): string {
+  protected getToyImage(toyId: number): string {
     return `https://toy.pequla.com/img/${toyId}.png`;
   }
 
-  goToToy(toyId: number) {
-    this.router.navigateByUrl(`/details/${toyId}`);
-  }
-
-  updateQuantity(item: BasketModel, quantity: number) {
+  protected updateQuantity(item: BasketModel, quantity: number) {
     if (item.status !== "RESERVED") return;
     if (quantity < 1) quantity = 1;
     if (quantity > 99) {
-      this.showMessage('Max količina je 99', 'snack-red');
+      this.showMessage('Maximum order for this item is 99', 'snack-red');
       quantity = 99;
     }
     item.numOfProd = quantity;
     this.basketService.updateItemQuantity(item.toyId, quantity);
   }
 
-  changeToCancel(item: BasketModel) {
+  protected changeToCancel(item: BasketModel) {
   this.basketService.updateItemStatus(item.toyId, 'CANCELED', item.basketId);
-  this.showMessage('Status promenjen na CANCELED', 'snack-green');
+  this.showMessage('Status has been changed to CANCELED', 'snack-green');
   this.updateLists(); 
 }
 
-changeToArrived(item: BasketModel) {
+protected changeToArrived(item: BasketModel) {
   this.basketService.updateItemStatus(item.toyId, 'ARRIVED', item.basketId);
-  this.showMessage('Status promenjen na ARRIVED', 'snack-green');
+  this.showMessage('Status has been changed to ARRIVED', 'snack-green');
   this.updateLists(); 
 }
 
-restoreCanceled(item: BasketModel) {
-  this.basketService.updateItemStatus(item.toyId, 'RESERVED', item.basketId);
-  this.showMessage('Stavka vraćena u korpu', 'snack-green');
-  this.updateLists();
-}
 
-removeItem(item: BasketModel) {
+protected removeItem(item: BasketModel) {
   this.basketService.removeItem(item.toyId,item.status, item.basketId);
   this.updateLists(); 
 }
 
-  hasUserReviewed(toyId: number, userMail: string | null): boolean {
+  protected hasUserReviewed(toyId: number, userMail: string | null): boolean {
     if (!userMail) return false;
     return this.reviews.some(r => r.userMail === userMail && r.toyId === toyId);
   }
 
-  selectRating(toyId: number, rating: number) {
+  protected selectRating(toyId: number, rating: number) {
     this.ratings[toyId] = rating;
   }
 
-  submitReview(toyId: number) {
+  protected submitReview(toyId: number) {
     const activeUser = UserService.getActiveUser();
     if (!activeUser) return;
 
     const rating = this.ratings[toyId];
-    const comment = this.comments[toyId] || '';
+
 
     if (this.hasUserReviewed(toyId, activeUser.email)) {
-      this.showMessage('Već ste ocenili ovu igračku.', 'snack-red');
+      this.showMessage('You already gave a review', 'snack-red');
       return;
     }
 
@@ -160,7 +148,6 @@ removeItem(item: BasketModel) {
       userMail: activeUser.email,
       userName: `${activeUser.firstName} ${activeUser.lastName}`,
       rating: rating.toString(),
-      comment,
       createdAt: new Date().toISOString(),
       updatedAt: null,
       toyId
@@ -169,21 +156,20 @@ removeItem(item: BasketModel) {
     this.reviews.push(review);
     localStorage.setItem('toyReviews', JSON.stringify(this.reviews));
 
-    this.showMessage('Hvala na oceni!', 'snack-green');
+    this.showMessage('Thank you for review', 'snack-green');
 
     delete this.ratings[toyId];
-    delete this.comments[toyId];
   }
 
-  getAverageRating(toy: ToyModel): number {
+  protected getAverageRating(toy: ToyModel): number {
     const toyReviews = this.reviews.filter(r => r.toyId === toy.toyId);
     if (toyReviews.length === 0) return 0;
     const total = toyReviews.reduce((sum, r) => sum + parseFloat(r.rating), 0);
-    return Math.round((total / toyReviews.length) * 10) / 10;
+    return Math.round(total / toyReviews.length);
   }
 
   private showMessage(message: string, style: string) {
-    this.snackBar.open(message, 'Zatvori', {
+    this.snackBar.open(message, 'Close', {
       duration: 2500,
       horizontalPosition: 'center',
       verticalPosition: 'top',

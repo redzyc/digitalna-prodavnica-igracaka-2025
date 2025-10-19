@@ -6,7 +6,6 @@
   align-items: flex-start;
 }
 
-/* Slika sa leve strane - 40% širine */
 .toy-image {
   flex: 0 0 40%;
   display: flex;
@@ -20,7 +19,6 @@
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
-/* Detalji sa desne strane - 60% */
 .toy-info {
   flex: 0 0 60%;
   background: rgba(255,255,255,0.05);

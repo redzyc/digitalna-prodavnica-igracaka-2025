@@ -42,7 +42,6 @@ export class Profile {
 
   constructor(private router: Router, private snackBar: MatSnackBar) {
     try {
-      // Uzmi trenutno aktivnog korisnika
       const user = UserService.getActiveUser();
       this.currentUser.set(user ?? null);
     } catch (e) {
@@ -88,7 +87,6 @@ export class Profile {
     UserService.changePassword(this.currentPassword, this.newPassword)
       .then(() => {
         this.snackBar.open('Password changed successfully!', 'Close', { duration: 2500 });
-        // Resetuj polja
         this.currentPassword = '';
         this.newPassword = '';
         this.confirmPassword = '';

@@ -2,7 +2,6 @@ import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { MainService } from '../../services/main.service';
 import { CommonModule } from '@angular/common';
 import { ToyService } from '../../services/toy.service';
 import { ToyModel } from '../../models/toy.model';
@@ -20,7 +19,7 @@ export class Signup {
 
   constructor(private formBuilder: FormBuilder, protected router: Router) {
     ToyService.getToys()
-      .then(rsp => this.toys.set(rsp.data.map((toy: ToyModel) => toy.name))) // samo imena
+      .then(rsp => this.toys.set(rsp.data.map((toy: ToyModel) => toy.name)))
       .catch(err => console.error('Error loading toys', err));
 
     this.form = this.formBuilder.group({
