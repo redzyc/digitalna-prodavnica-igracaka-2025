@@ -80,12 +80,12 @@
 
 
     <mat-card-content class="basket-summary">
-      <h4>Ukupno: {{ basket.totalPrice | number:'1.0-2' }} RSD</h4>
-      <p><strong>Stavki:</strong> {{ basket.totalItemCount }}</p>
+      <h4>Total : {{ basket.totalPrice | number:'1.0-2' }} RSD</h4>
+      <p><strong>Number of items:</strong> {{ basket.totalItemCount }}</p>
     </mat-card-content>
   </mat-card>
 </ng-container>
 
 <ng-template #emptyBasket>
-  <p class="empty-basket">Korpa je prazna 🛒</p>
+  <p class="empty-basket">Your bag is empty</p>
 </ng-template>

@@ -49,6 +49,7 @@ export class Basket {
     this.activeUserEmail = activeUser?.email || null;
     if (!activeUser) {
       alert("You need to be logged in");
+      sessionStorage.setItem('ref', this.router.url);
       this.router.navigateByUrl('/login');
       return;
     }
